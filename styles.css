@@ -1,0 +1,1346 @@
+/* =========================================================
+   WebCloud — Production Stylesheet
+   Version: 1.0.0
+   ---------------------------------------------------------
+   Built for:
+   - index-2.html
+   - script.js
+   - Responsive/mobile-first behavior
+   - Scroll/parallax interactions
+   - Reveal animations
+   - Accessible focus states
+   - Reduced-motion support
+   - Modern browser performance
+   ========================================================= */
+
+
+/* =========================================================
+   01. DESIGN TOKENS
+   ========================================================= */
+
+:root {
+  /* Core colors */
+  --bg: #030712;
+  --bg-soft: #07101f;
+  --surface: rgba(10, 18, 34, 0.72);
+  --surface-solid: #0a1222;
+  --surface-light: rgba(255, 255, 255, 0.055);
+
+  --text: #f8fafc;
+  --text-soft: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.15);
+
+  --accent: #7dd3fc;
+  --accent-strong: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.14);
+
+  --particle-color: #ffffff;
+
+  /* Layout */
+  --container: 1180px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --header-height: 82px;
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+
+  /* Shadows */
+  --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.18);
+  --shadow-md: 0 24px 70px rgba(0, 0, 0, 0.28);
+  --shadow-glow: 0 0 60px rgba(56, 189, 248, 0.12);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-fast: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* JS viewport variables */
+  --viewport-width: 100vw;
+  --viewport-height: 100vh;
+
+  /* Safe area */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+
+/* =========================================================
+   02. RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(56, 189, 248, 0.09),
+      transparent 38%
+    ),
+    var(--bg);
+
+  color: var(--text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 16px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(125, 211, 252, 0.24);
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   03. ACCESSIBILITY
+   ========================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* =========================================================
+   04. GLOBAL LAYOUT
+   ========================================================= */
+
+main {
+  position: relative;
+  isolation: isolate;
+}
+
+section {
+  position: relative;
+}
+
+.site-footer,
+.site-header,
+.hero > * {
+  position: relative;
+}
+
+.site-header,
+.site-footer {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+
+/* =========================================================
+   05. HEADER
+   ========================================================= */
+
+.site-header {
+  position: fixed;
+  z-index: 1000;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  min-height: var(--header-height);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+
+  padding-top: max(12px, var(--safe-top));
+  padding-bottom: 12px;
+
+  background: rgba(3, 7, 18, 0.28);
+  border-bottom: 1px solid transparent;
+
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+
+  transition:
+    background 350ms var(--ease),
+    border-color 350ms var(--ease),
+    box-shadow 350ms var(--ease),
+    backdrop-filter 350ms var(--ease);
+}
+
+.site-header.scrolled,
+.site-header.is-scrolled,
+.site-header[data-scrolled="true"] {
+  background: rgba(3, 7, 18, 0.78);
+  border-bottom-color: var(--line);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.brand {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+
+  min-width: 110px;
+
+  transition:
+    transform 250ms var(--ease),
+    opacity 250ms var(--ease);
+}
+
+.brand:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+.brand img {
+  width: auto;
+  height: 34px;
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   06. NAVIGATION
+   ========================================================= */
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(18px, 2.5vw, 34px);
+}
+
+.main-nav > a {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+
+  transition:
+    color 220ms var(--ease),
+    transform 220ms var(--ease);
+}
+
+.main-nav > a:not(.nav-cta)::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+
+  width: 0;
+  height: 1px;
+
+  background: var(--accent);
+
+  transform: translateX(-50%);
+
+  transition: width 240ms var(--ease);
+}
+
+.main-nav > a:not(.nav-cta):hover {
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.main-nav > a:not(.nav-cta):hover::after {
+  width: 100%;
+}
+
+.nav-cta {
+  padding: 0 18px;
+
+  color: #02111d !important;
+
+  background: var(--text);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  transition:
+    transform 220ms var(--ease),
+    box-shadow 220ms var(--ease),
+    background 220ms var(--ease) !important;
+}
+
+.nav-cta:hover {
+  color: #020617 !important;
+  background: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.26),
+    0 0 30px rgba(125, 211, 252, 0.08);
+}
+
+
+/* =========================================================
+   07. HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+  z-index: 0;
+
+  min-height: max(720px, 100svh);
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(56, 189, 248, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 15% 80%,
+      rgba(14, 165, 233, 0.06),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #020617 0%,
+      #030712 58%,
+      #050b17 100%
+    );
+}
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+  z-index: 0;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 7, 18, 0.72),
+      transparent 28%,
+      transparent 72%,
+      rgba(3, 7, 18, 0.72)
+    );
+
+  opacity: 0.8;
+}
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+  z-index: 2;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 220px;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--bg)
+  );
+}
+
+
+/* =========================================================
+   08. HERO ATMOSPHERIC LAYERS
+   ========================================================= */
+
+.sky-layer {
+  position: absolute;
+  z-index: -2;
+
+  pointer-events: none;
+
+  inset: -12%;
+
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+
+  will-change: transform;
+
+  transition: opacity 500ms ease;
+}
+
+.sky-layer-back {
+  opacity: 0.75;
+
+  background:
+    radial-gradient(
+      ellipse at 20% 40%,
+      rgba(125, 211, 252, 0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 80% 30%,
+      rgba(59, 130, 246, 0.08),
+      transparent 32%
+    );
+}
+
+.sky-layer-mid {
+  opacity: 0.6;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 60%,
+      rgba(56, 189, 248, 0.08),
+      transparent 38%
+    );
+}
+
+.sky-layer-front {
+  opacity: 0.45;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(14, 165, 233, 0.11),
+      transparent 42%
+    );
+}
+
+
+/* =========================================================
+   09. PARTICLES
+   ========================================================= */
+
+.particle-field {
+  position: absolute;
+  z-index: 1;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.45;
+}
+
+.particle-field::before,
+.particle-field::after {
+  content: "";
+
+  position: absolute;
+
+  width: 2px;
+  height: 2px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.5);
+
+  box-shadow:
+    8vw 15vh rgba(255, 255, 255, 0.24),
+    17vw 66vh rgba(255, 255, 255, 0.20),
+    28vw 30vh rgba(255, 255, 255, 0.22),
+    42vw 72vh rgba(255, 255, 255, 0.18),
+    58vw 19vh rgba(255, 255, 255, 0.22),
+    69vw 58vh rgba(255, 255, 255, 0.18),
+    83vw 26vh rgba(255, 255, 255, 0.20),
+    94vw 75vh rgba(255, 255, 255, 0.16);
+}
+
+.particle-field::before {
+  top: 0;
+  left: 0;
+}
+
+.particle-field::after {
+  right: 0;
+  bottom: 0;
+
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   10. HERO CONTENT
+   ========================================================= */
+
+.hero-content {
+  z-index: 4;
+
+  width: min(100% - (var(--gutter) * 2), 980px);
+
+  margin-top: calc(var(--header-height) / 2);
+
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 0 0 24px;
+
+  color: var(--accent);
+
+  font-size: clamp(0.68rem, 1vw, 0.78rem);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+
+  text-transform: uppercase;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+
+  width: 22px;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(125, 211, 252, 0.7)
+  );
+}
+
+.eyebrow::after {
+  transform: rotate(180deg);
+}
+
+.hero h1 {
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  color: var(--text);
+
+  font-size: clamp(3.2rem, 8vw, 7.5rem);
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 0.94;
+
+  text-wrap: balance;
+
+  text-shadow:
+    0 8px 50px rgba(0, 0, 0, 0.28);
+}
+
+.hero h1 span {
+  display: inline-block;
+
+  color: transparent;
+
+  background:
+    linear-gradient(
+      120deg,
+      #ffffff 0%,
+      #bae6fd 42%,
+      #38bdf8 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-copy {
+  max-width: 650px;
+
+  margin: 30px auto 0;
+
+  color: var(--text-muted);
+
+  font-size: clamp(1rem, 1.7vw, 1.16rem);
+  line-height: 1.75;
+
+  text-wrap: balance;
+}
+
+
+/* =========================================================
+   11. HERO ACTIONS
+   ========================================================= */
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 36px;
+}
+
+.button {
+  min-height: 52px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 24px;
+
+  border-radius: 999px;
+
+  font-size: 0.94rem;
+  font-weight: 750;
+
+  transition:
+    transform 240ms var(--ease),
+    box-shadow 240ms var(--ease),
+    background 240ms var(--ease),
+    border-color 240ms var(--ease),
+    color 240ms var(--ease);
+}
+
+.button:hover {
+  transform: translateY(-3px);
+}
+
+.button:active {
+  transform: translateY(-1px);
+}
+
+.button-primary {
+  color: #02111d;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #dff6ff 100%
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  box-shadow:
+    0 12px 34px rgba(0, 0, 0, 0.24),
+    0 0 40px rgba(125, 211, 252, 0.08);
+}
+
+.button-primary:hover {
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.30),
+    0 0 50px rgba(125, 211, 252, 0.15);
+}
+
+.button-secondary {
+  color: var(--text);
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid var(--line-strong);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.button-secondary:hover {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+
+/* =========================================================
+   12. SCROLL HINT
+   ========================================================= */
+
+.scroll-hint {
+  position: absolute;
+  z-index: 5;
+
+  left: 50%;
+  bottom: max(28px, var(--safe-bottom));
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: rgba(203, 213, 225, 0.58);
+
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  transform: translateX(-50%);
+
+  transition:
+    opacity 250ms ease,
+    transform 250ms var(--ease);
+}
+
+.scroll-hint span {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateY(4px);
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   13. GENERAL SECTIONS
+   ========================================================= */
+
+.section-placeholder {
+  min-height: 620px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    120px
+    var(--gutter);
+
+  text-align: center;
+
+  border-top: 1px solid var(--line);
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(56, 189, 248, 0.045),
+      transparent 32%
+    ),
+    var(--bg);
+}
+
+.section-placeholder:nth-of-type(even) {
+  background:
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(59, 130, 246, 0.035),
+      transparent 30%
+    ),
+    var(--bg-soft);
+}
+
+.section-placeholder p {
+  margin: 0 0 14px;
+
+  color: var(--accent);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.section-placeholder h2 {
+  max-width: 800px;
+
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+
+  text-wrap: balance;
+}
+
+
+/* =========================================================
+   14. CONTACT
+   ========================================================= */
+
+.contact-placeholder {
+  min-height: 560px;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(56, 189, 248, 0.09),
+      transparent 36%
+    ),
+    var(--bg);
+}
+
+.contact-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 34px;
+}
+
+.contact-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 46px;
+
+  padding: 0 20px;
+
+  color: var(--text-soft);
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  font-size: 0.9rem;
+  font-weight: 650;
+
+  transition:
+    color 220ms var(--ease),
+    background 220ms var(--ease),
+    border-color 220ms var(--ease),
+    transform 220ms var(--ease);
+}
+
+.contact-links a:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+  border-color: rgba(125, 211, 252, 0.3);
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   15. FOOTER
+   ========================================================= */
+
+.site-footer {
+  min-height: 84px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding-top: 20px;
+  padding-bottom: max(20px, var(--safe-bottom));
+
+  color: var(--text-dim);
+
+  border-top: 1px solid var(--line);
+
+  font-size: 0.78rem;
+}
+
+.site-footer span:last-child {
+  text-align: right;
+}
+
+
+/* =========================================================
+   16. JAVASCRIPT REVEAL ANIMATIONS
+   ========================================================= */
+
+[data-reveal],
+.reveal,
+.fade-in,
+.animate-on-scroll {
+  opacity: 0;
+
+  transform:
+    translate3d(0, 28px, 0);
+
+  transition:
+    opacity 800ms var(--ease),
+    transform 800ms var(--ease);
+}
+
+[data-reveal].is-visible,
+[data-reveal].revealed,
+[data-reveal].visible,
+.reveal.is-visible,
+.reveal.revealed,
+.reveal.visible,
+.fade-in.is-visible,
+.fade-in.revealed,
+.fade-in.visible,
+.animate-on-scroll.is-visible,
+.animate-on-scroll.revealed,
+.animate-on-scroll.visible {
+  opacity: 1;
+
+  transform:
+    translate3d(0, 0, 0);
+}
+
+
+/* =========================================================
+   17. PARALLAX COMPATIBILITY
+   ========================================================= */
+
+[data-parallax],
+.parallax,
+.cloud,
+.cloud-layer {
+  transform:
+    translate3d(
+      0,
+      var(--parallax-y, 0px),
+      0
+    );
+
+  will-change: transform;
+}
+
+
+/* =========================================================
+   18. MOBILE MENU COMPATIBILITY
+   ========================================================= */
+
+[data-menu-toggle],
+.menu-toggle,
+.nav-toggle,
+.hamburger {
+  display: none;
+}
+
+
+/* =========================================================
+   19. TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  :root {
+    --header-height: 72px;
+  }
+
+  .site-header {
+    min-height: var(--header-height);
+  }
+
+  .main-nav {
+    gap: 16px;
+  }
+
+  .main-nav > a {
+    font-size: 0.84rem;
+  }
+
+  .hero {
+    min-height: 760px;
+  }
+
+  .hero-content {
+    margin-top: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 10vw, 5.5rem);
+  }
+
+  .section-placeholder {
+    min-height: 560px;
+  }
+}
+
+
+/* =========================================================
+   20. MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  :root {
+    --gutter: 20px;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  .site-header {
+    min-height: 68px;
+
+    padding-top: max(8px, var(--safe-top));
+    padding-bottom: 8px;
+  }
+
+  .brand img {
+    height: 30px;
+  }
+
+  .main-nav {
+    gap: 8px;
+  }
+
+  .main-nav > a:not(.nav-cta) {
+    display: none;
+  }
+
+  .nav-cta {
+    min-height: 40px;
+    padding: 0 15px;
+
+    font-size: 0.78rem;
+  }
+
+  .hero {
+    min-height: 100svh;
+    padding-top: 60px;
+  }
+
+  .hero-content {
+    width: min(100%, 620px);
+  }
+
+  .eyebrow {
+    margin-bottom: 18px;
+
+    font-size: 0.61rem;
+    letter-spacing: 0.15em;
+  }
+
+  .eyebrow::before,
+  .eyebrow::after {
+    width: 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.9rem, 15vw, 5rem);
+    line-height: 0.96;
+    letter-spacing: -0.07em;
+  }
+
+  .hero-copy {
+    margin-top: 22px;
+
+    font-size: 0.94rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    width: 100%;
+
+    flex-direction: column;
+
+    margin-top: 28px;
+  }
+
+  .button {
+    width: min(100%, 320px);
+    min-height: 50px;
+  }
+
+  .scroll-hint {
+    bottom: max(22px, var(--safe-bottom));
+
+    font-size: 0.62rem;
+  }
+
+  .section-placeholder {
+    min-height: 500px;
+
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+
+  .section-placeholder h2 {
+    font-size: clamp(2rem, 11vw, 3.2rem);
+  }
+
+  .contact-links {
+    width: 100%;
+
+    flex-direction: column;
+  }
+
+  .contact-links a {
+    width: min(100%, 300px);
+  }
+
+  .site-footer {
+    min-height: auto;
+
+    flex-direction: column;
+    justify-content: center;
+
+    padding-top: 28px;
+    padding-bottom: max(28px, var(--safe-bottom));
+
+    text-align: center;
+  }
+
+  .site-footer span:last-child {
+    text-align: center;
+  }
+}
+
+
+/* =========================================================
+   21. SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  .site-header {
+    gap: 12px;
+  }
+
+  .brand img {
+    height: 27px;
+  }
+
+  .nav-cta {
+    padding: 0 13px;
+    font-size: 0.72rem;
+  }
+
+  .hero {
+    min-height: 720px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.65rem, 15vw, 4rem);
+  }
+
+  .hero-copy {
+    font-size: 0.9rem;
+  }
+
+  .eyebrow {
+    gap: 7px;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   22. LANDSCAPE MOBILE
+   ========================================================= */
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    min-height: 680px;
+  }
+
+  .hero-content {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .scroll-hint {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   23. HIGH-DENSITY / PERFORMANCE
+   ========================================================= */
+
+@media (min-width: 1200px) {
+  .hero::before {
+    opacity: 0.9;
+  }
+
+  .hero-content {
+    transform: translateY(-2vh);
+  }
+}
+
+
+/* =========================================================
+   24. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-layer,
+  [data-parallax],
+  .parallax,
+  .cloud,
+  .cloud-layer {
+    transform: none !important;
+  }
+
+  .scroll-hint span {
+    animation: none;
+  }
+
+  [data-reveal],
+  .reveal,
+  .fade-in,
+  .animate-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+/* =========================================================
+   25. PRINT
+   ========================================================= */
+
+@media print {
+  .site-header {
+    position: static;
+
+    background: none;
+
+    border: 0;
+    box-shadow: none;
+
+    backdrop-filter: none;
+  }
+
+  .hero {
+    min-height: auto;
+
+    color: #000;
+    background: #fff;
+  }
+
+  .hero::before,
+  .hero::after,
+  .sky-layer,
+  .particle-field,
+  .scroll-hint {
+    display: none;
+  }
+
+  .hero h1,
+  .hero-copy,
+  .section-placeholder h2 {
+    color: #000;
+  }
+
+  .hero h1 span {
+    color: #000;
+    background: none;
+  }
+    }
