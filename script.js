@@ -1,22 +1,25 @@
 /*
  * =========================================================
- * WebCloud — Production Front-End
+ * WebCloud — Production Front-End Interaction System
  * =========================================================
  *
- * Dependency-free interaction system.
+ * Dependency-free.
  *
- * Features:
+ * Handles:
  * - Smart sticky header
- * - Scroll indicator
+ * - Working mobile navigation
  * - Smooth anchor navigation
- * - Scroll reveal animations
+ * - Scroll indicator
+ * - Scroll reveal
  * - Lightweight parallax
- * - Accessible mobile navigation
- * - Reduced-motion support
+ * - Cloud / sky movement
+ * - Reduced-motion accessibility
  * - Responsive viewport state
  * - External-link safety
- * - Passive event listeners
- * - requestAnimationFrame scroll handling
+ * - Escape-key navigation closing
+ * - Body scroll locking while mobile menu is open
+ *
+ * Designed for the WebCloud one-page experience.
  * =========================================================
  */
 
@@ -27,6 +30,23 @@
   const win = window;
   const root = doc.documentElement;
   const body = doc.body;
+
+  const header = doc.querySelector(".site-header");
+  const nav = doc.querySelector(".main-nav");
+  const menuToggle = doc.querySelector(".menu-toggle");
+  const scrollHint = doc.querySelector(".scroll-hint");
+
+  const parallaxElements = Array.from(
+    doc.querySelectorAll(
+      "[data-parallax], .parallax, .cloud, .cloud-layer, .sky-layer"
+    )
+  );
+
+  const revealElements = Array.from(
+    doc.querySelectorAll(
+      "[data-reveal], .reveal, .fade-in, .animate-on-scroll"
+    )
+  );
 
   const reducedMotionQuery = win.matchMedia(
     "(prefers-reduced-motion: reduce)"
@@ -39,24 +59,7 @@
     ticking: false,
   };
 
-  const selectors = {
-    header: ".site-header, [data-header]",
-    scrollHint: ".scroll-hint, .scroll-indicator, .scroll-down, [data-scroll-indicator]",
-    parallax:
-      "[data-parallax], .parallax, .cloud, .cloud-layer, .sky-layer",
-    reveal:
-      "[data-reveal], .reveal, .fade-in, .animate-on-scroll",
-    menuToggle:
-      "[data-menu-toggle], .menu-toggle, .nav-toggle, .hamburger",
-    menu:
-      ".main-nav, [data-menu], [data-mobile-menu]",
-  };
-
-  const header = doc.querySelector(selectors.header);
-  const scrollHint = doc.querySelector(selectors.scrollHint);
-  const parallaxElements = Array.from(
-    doc.querySelectorAll(selectors.parallax)
-  );
+  const MOBILE_BREAKPOINT = 700;
 
   /* =======================================================
      UTILITIES
@@ -65,7 +68,8 @@
   const clamp = (value, min, max) =>
     Math.min(Math.max(value, min), max);
 
-  const isReducedMotion = () => reducedMotionQuery.matches;
+  const prefersReducedMotion = () =>
+    reducedMotionQuery.matches;
 
   /* =======================================================
      HEADER
@@ -76,9 +80,20 @@
 
     const scrolled = state.scrollY > 24;
 
-    header.classList.toggle("scrolled", scrolled);
-    header.classList.toggle("is-scrolled", scrolled);
-    header.setAttribute("data-scrolled", String(scrolled));
+    header.classList.toggle(
+      "scrolled",
+      scrolled
+    );
+
+    header.classList.toggle(
+      "is-scrolled",
+      scrolled
+    );
+
+    header.setAttribute(
+      "data-scrolled",
+      String(scrolled)
+    );
   }
 
   /* =======================================================
@@ -88,7 +103,10 @@
   function updateScrollHint() {
     if (!scrollHint) return;
 
-    const fadeDistance = Math.max(state.height * 0.55, 1);
+    const fadeDistance = Math.max(
+      state.height * 0.55,
+      1
+    );
 
     const progress = clamp(
       state.scrollY / fadeDistance,
@@ -96,63 +114,81 @@
       1
     );
 
-    const opacity = 1 - progress;
-
-    scrollHint.style.opacity = String(opacity);
+    scrollHint.style.opacity = String(
+      1 - progress
+    );
 
     scrollHint.style.pointerEvents =
-      progress >= 0.98 ? "none" : "";
+      progress >= 0.98
+        ? "none"
+        : "";
   }
 
   /* =======================================================
-     PARALLAX
+     PARALLAX / CLOUD MOVEMENT
      ======================================================= */
 
   function updateParallax() {
-    if (isReducedMotion()) return;
+    if (
+      prefersReducedMotion() ||
+      !parallaxElements.length
+    ) {
+      return;
+    }
 
-    if (!parallaxElements.length) return;
+    parallaxElements.forEach(
+      (element, index) => {
+        const explicitSpeed =
+          Number.parseFloat(
+            element.dataset.parallaxSpeed ||
+              element.dataset.speed ||
+              ""
+          );
 
-    parallaxElements.forEach((element, index) => {
-      const explicitSpeed = Number.parseFloat(
-        element.dataset.parallaxSpeed ||
-          element.dataset.speed ||
-          ""
-      );
+        const speed = Number.isFinite(
+          explicitSpeed
+        )
+          ? explicitSpeed
+          : 0.018 +
+            (index % 5) * 0.008;
 
-      const speed = Number.isFinite(explicitSpeed)
-        ? explicitSpeed
-        : 0.025 + (index % 5) * 0.012;
+        const direction =
+          element.dataset.parallaxDirection ===
+          "down"
+            ? 1
+            : -1;
 
-      const direction =
-        element.dataset.parallaxDirection === "down"
-          ? 1
-          : -1;
+        const offset =
+          state.scrollY *
+          speed *
+          direction;
 
-      const offset =
-        state.scrollY * speed * direction;
+        const maxOffset = Math.max(
+          state.height * 0.16,
+          50
+        );
 
-      const maxOffset = Math.max(
-        state.height * 0.18,
-        60
-      );
+        const safeOffset = clamp(
+          offset,
+          -maxOffset,
+          maxOffset
+        );
 
-      const safeOffset = clamp(
-        offset,
-        -maxOffset,
-        maxOffset
-      );
+        element.style.setProperty(
+          "--parallax-y",
+          `${safeOffset.toFixed(2)}px`
+        );
 
-      const transform =
-        `translate3d(0, ${safeOffset.toFixed(2)}px, 0)`;
-
-      element.style.setProperty(
-        "--parallax-y",
-        `${safeOffset.toFixed(2)}px`
-      );
-
-      element.style.transform = transform;
-    });
+        /*
+         * Only apply transforms to elements that
+         * are explicitly part of the parallax system.
+         */
+        element.style.transform =
+          `translate3d(0, ${safeOffset.toFixed(
+            2
+          )}px, 0)`;
+      }
+    );
   }
 
   /* =======================================================
@@ -177,70 +213,203 @@
 
     state.ticking = true;
 
-    win.requestAnimationFrame(
-      updateScrollEffects
-    );
+    if (
+      typeof win.requestAnimationFrame ===
+      "function"
+    ) {
+      win.requestAnimationFrame(
+        updateScrollEffects
+      );
+    } else {
+      updateScrollEffects();
+    }
   }
 
   /* =======================================================
-     REVEAL ANIMATIONS
+     MOBILE NAVIGATION
      ======================================================= */
 
-  function setupRevealAnimations() {
-    const elements = Array.from(
-      doc.querySelectorAll(selectors.reveal)
+  function isMobileMenuOpen() {
+    return (
+      menuToggle?.getAttribute(
+        "aria-expanded"
+      ) === "true"
+    );
+  }
+
+  function openMobileMenu() {
+    if (!menuToggle || !nav) return;
+
+    nav.classList.add(
+      "is-open",
+      "open",
+      "active"
     );
 
-    if (!elements.length) return;
+    menuToggle.classList.add(
+      "is-active",
+      "active"
+    );
 
-    if (
-      isReducedMotion() ||
-      !("IntersectionObserver" in win)
-    ) {
-      elements.forEach((element) => {
-        element.classList.add(
-          "is-visible",
-          "revealed",
-          "visible"
-        );
+    menuToggle.setAttribute(
+      "aria-expanded",
+      "true"
+    );
 
-        element.style.opacity = "";
-        element.style.transform = "";
-      });
+    menuToggle.setAttribute(
+      "aria-label",
+      "Close navigation menu"
+    );
 
+    body.classList.add(
+      "menu-open"
+    );
+  }
+
+  function closeMobileMenu() {
+    if (!menuToggle || !nav) return;
+
+    nav.classList.remove(
+      "is-open",
+      "open",
+      "active"
+    );
+
+    menuToggle.classList.remove(
+      "is-active",
+      "active"
+    );
+
+    menuToggle.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+    menuToggle.setAttribute(
+      "aria-label",
+      "Open navigation menu"
+    );
+
+    body.classList.remove(
+      "menu-open"
+    );
+  }
+
+  function toggleMobileMenu() {
+    if (isMobileMenuOpen()) {
+      closeMobileMenu();
+    } else {
+      openMobileMenu();
+    }
+  }
+
+  function setupMobileNavigation() {
+    if (!menuToggle || !nav) {
       return;
     }
 
-    const observer =
-      new IntersectionObserver(
-        (entries, currentObserver) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
+    /*
+     * The button already exists in index.html.
+     * We use it directly instead of generating
+     * another button or another navigation.
+     */
 
-            const element = entry.target;
+    menuToggle.setAttribute(
+      "aria-expanded",
+      "false"
+    );
 
-            element.classList.add(
-              "is-visible",
-              "revealed",
-              "visible"
-            );
+    menuToggle.setAttribute(
+      "aria-label",
+      "Open navigation menu"
+    );
 
-            currentObserver.unobserve(element);
-          });
-        },
-        {
-          threshold: 0.12,
-          rootMargin: "0px 0px -8% 0px",
+    menuToggle.addEventListener(
+      "click",
+      toggleMobileMenu
+    );
+
+    /*
+     * Close the navigation after clicking
+     * any navigation link.
+     */
+
+    nav.querySelectorAll(
+      "a[href]"
+    ).forEach((link) => {
+      link.addEventListener(
+        "click",
+        () => {
+          closeMobileMenu();
         }
       );
-
-    elements.forEach((element) => {
-      observer.observe(element);
     });
+
+    /*
+     * Escape closes the menu.
+     */
+
+    doc.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key === "Escape" &&
+          isMobileMenuOpen()
+        ) {
+          closeMobileMenu();
+
+          menuToggle.focus();
+        }
+      }
+    );
+
+    /*
+     * Clicking outside the navigation
+     * closes it on mobile.
+     */
+
+    doc.addEventListener(
+      "click",
+      (event) => {
+        if (!isMobileMenuOpen()) {
+          return;
+        }
+
+        if (
+          menuToggle.contains(
+            event.target
+          ) ||
+          nav.contains(
+            event.target
+          )
+        ) {
+          return;
+        }
+
+        closeMobileMenu();
+      }
+    );
+
+    /*
+     * Restore desktop state after resizing.
+     */
+
+    win.addEventListener(
+      "resize",
+      () => {
+        if (
+          win.innerWidth >
+          MOBILE_BREAKPOINT
+        ) {
+          closeMobileMenu();
+        }
+      },
+      { passive: true }
+    );
   }
 
   /* =======================================================
-     SMOOTH NAVIGATION
+     SMOOTH ANCHOR NAVIGATION
      ======================================================= */
 
   function setupSmoothNavigation() {
@@ -255,14 +424,19 @@
         "click",
         (event) => {
           const href =
-            link.getAttribute("href");
+            link.getAttribute(
+              "href"
+            );
 
           if (!href) return;
 
-          let target;
+          let target = null;
 
           try {
-            target = doc.querySelector(href);
+            target =
+              doc.querySelector(
+                href
+              );
           } catch {
             return;
           }
@@ -271,27 +445,41 @@
 
           event.preventDefault();
 
-          const headerHeight = header
-            ? header.getBoundingClientRect().height
-            : 0;
+          const headerHeight =
+            header
+              ? header.getBoundingClientRect()
+                  .height
+              : 0;
 
           const targetTop =
-            target.getBoundingClientRect().top +
+            target.getBoundingClientRect()
+              .top +
             win.scrollY -
-            headerHeight;
+            headerHeight -
+            12;
 
           win.scrollTo({
-            top: Math.max(0, targetTop),
-            behavior: isReducedMotion()
-              ? "auto"
-              : "smooth",
+            top: Math.max(
+              0,
+              targetTop
+            ),
+            behavior:
+              prefersReducedMotion()
+                ? "auto"
+                : "smooth",
           });
 
+          /*
+           * Keep the URL clean but still
+           * preserve the section state.
+           */
+
           if (
-            window.history &&
-            history.replaceState
+            win.history &&
+            typeof win.history.replaceState ===
+              "function"
           ) {
-            history.replaceState(
+            win.history.replaceState(
               null,
               "",
               href
@@ -299,10 +487,87 @@
           }
 
           closeMobileMenu();
-        },
-        { passive: false }
+        }
       );
     });
+  }
+
+  /* =======================================================
+     SCROLL REVEAL
+     ======================================================= */
+
+  function setupRevealAnimations() {
+    if (!revealElements.length) {
+      return;
+    }
+
+    /*
+     * Accessibility first.
+     */
+
+    if (
+      prefersReducedMotion() ||
+      !(
+        "IntersectionObserver" in
+        win
+      )
+    ) {
+      revealElements.forEach(
+        (element) => {
+          element.classList.add(
+            "is-visible",
+            "revealed",
+            "visible"
+          );
+
+          element.style.opacity = "";
+          element.style.transform = "";
+        }
+      );
+
+      return;
+    }
+
+    const observer =
+      new IntersectionObserver(
+        (entries, currentObserver) => {
+          entries.forEach(
+            (entry) => {
+              if (
+                !entry.isIntersecting
+              ) {
+                return;
+              }
+
+              const element =
+                entry.target;
+
+              element.classList.add(
+                "is-visible",
+                "revealed",
+                "visible"
+              );
+
+              currentObserver.unobserve(
+                element
+              );
+            }
+          );
+        },
+        {
+          threshold: 0.12,
+          rootMargin:
+            "0px 0px -8% 0px",
+        }
+      );
+
+    revealElements.forEach(
+      (element) => {
+        observer.observe(
+          element
+        );
+      }
+    );
   }
 
   /* =======================================================
@@ -311,7 +576,9 @@
 
   function setupExternalLinks() {
     const links = Array.from(
-      doc.querySelectorAll("a[href]")
+      doc.querySelectorAll(
+        "a[href]"
+      )
     );
 
     const currentHost =
@@ -319,14 +586,21 @@
 
     links.forEach((link) => {
       const rawHref =
-        link.getAttribute("href");
+        link.getAttribute(
+          "href"
+        );
 
       if (!rawHref) return;
+
+      /*
+       * Ignore local links and special protocols.
+       */
 
       if (
         rawHref.startsWith("#") ||
         rawHref.startsWith("/") ||
-        rawHref.startsWith(".") ||
+        rawHref.startsWith("./") ||
+        rawHref.startsWith("../") ||
         rawHref.startsWith("mailto:") ||
         rawHref.startsWith("tel:")
       ) {
@@ -345,335 +619,123 @@
       }
 
       if (
-        url.protocol !== "http:" &&
-        url.protocol !== "https:"
+        url.protocol !==
+          "http:" &&
+        url.protocol !==
+          "https:"
       ) {
         return;
       }
 
-      if (url.hostname === currentHost) {
-        return;
-      }
-
-      link.target = "_blank";
-      link.rel =
-        "noopener noreferrer";
+      /*
+       * External links open safely in
+       * a separate tab.
+       */
 
       if (
-        !link.getAttribute(
-          "aria-label"
-        ) &&
-        link.textContent.trim()
+        url.hostname !==
+        currentHost
       ) {
-        link.setAttribute(
-          "aria-label",
-          `${link.textContent.trim()} (opens in a new tab)`
-        );
+        link.target = "_blank";
+        link.rel =
+          "noopener noreferrer";
       }
     });
   }
 
   /* =======================================================
-     MOBILE MENU
+     RESPONSIVE VIEWPORT STATE
      ======================================================= */
 
-  let mobileMenu = null;
-  let mobileToggle = null;
+  function updateViewportState() {
+    state.width =
+      win.innerWidth;
 
-  function getMobileMenu() {
-    if (mobileMenu) return mobileMenu;
+    state.height =
+      win.innerHeight;
 
-    mobileMenu =
-      doc.querySelector(
-        "#mobile-menu, [data-mobile-menu]"
-      ) ||
-      doc.querySelector(
-        ".main-nav"
-      );
+    root.style.setProperty(
+      "--viewport-width",
+      `${state.width}px`
+    );
 
-    return mobileMenu;
+    root.style.setProperty(
+      "--viewport-height",
+      `${state.height}px`
+    );
+
+    root.classList.toggle(
+      "is-mobile",
+      state.width <=
+        MOBILE_BREAKPOINT
+    );
+
+    root.classList.toggle(
+      "is-desktop",
+      state.width >
+        MOBILE_BREAKPOINT
+    );
+
+    requestScrollUpdate();
   }
 
-  function createMobileMenu() {
-    const existingNav =
-      doc.querySelector(".main-nav");
-
-    if (!existingNav) return;
-
-    if (
-      doc.querySelector(
-        ".mobile-menu-toggle"
-      )
-    ) {
-      return;
-    }
-
-    const headerElement =
-      doc.querySelector(".site-header");
-
-    if (!headerElement) return;
-
-    /*
-     * Clone the existing navigation so the
-     * desktop structure remains untouched.
-     */
-
-    const mobileNav =
-      existingNav.cloneNode(true);
-
-    mobileNav.classList.add(
-      "mobile-nav"
-    );
-
-    mobileNav.id = "mobile-menu";
-
-    mobileNav.setAttribute(
-      "aria-label",
-      "Mobile navigation"
-    );
-
-    mobileNav.removeAttribute(
-      "aria-hidden"
-    );
-
-    mobileNav
-      .querySelectorAll(
-        ".nav-cta"
-      )
-      .forEach((button) => {
-        button.classList.add(
-          "mobile-nav-cta"
-        );
-      });
-
-    const toggle =
-      doc.createElement("button");
-
-    toggle.type = "button";
-
-    toggle.className =
-      "mobile-menu-toggle";
-
-    toggle.setAttribute(
-      "aria-label",
-      "Open navigation"
-    );
-
-    toggle.setAttribute(
-      "aria-controls",
-      "mobile-menu"
-    );
-
-    toggle.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-    toggle.innerHTML = `
-      <span></span>
-      <span></span>
-      <span></span>
-    `;
-
-    headerElement.appendChild(toggle);
-
-    doc.body.appendChild(
-      mobileNav
-    );
-
-    mobileToggle = toggle;
-    mobileMenu = mobileNav;
-
-    toggle.addEventListener(
-      "click",
-      () => {
-        const open =
-          toggle.getAttribute(
-            "aria-expanded"
-          ) === "true";
-
-        if (open) {
-          closeMobileMenu();
-        } else {
-          openMobileMenu();
-        }
-      }
-    );
-
-    mobileNav
-      .querySelectorAll("a[href]")
-      .forEach((link) => {
-        link.addEventListener(
-          "click",
-          () => {
-            closeMobileMenu();
-          }
-        );
-      });
-  }
-
-  function openMobileMenu() {
-    if (
-      !mobileMenu ||
-      !mobileToggle
-    ) {
-      return;
-    }
-
-    mobileMenu.classList.add(
-      "is-open",
-      "open",
-      "active"
-    );
-
-    mobileToggle.classList.add(
-      "is-active"
-    );
-
-    mobileToggle.setAttribute(
-      "aria-expanded",
-      "true"
-    );
-
-    mobileToggle.setAttribute(
-      "aria-label",
-      "Close navigation"
-    );
-
-    body.classList.add(
-      "menu-open"
-    );
-  }
-
-  function closeMobileMenu() {
-    if (
-      !mobileMenu ||
-      !mobileToggle
-    ) {
-      return;
-    }
-
-    mobileMenu.classList.remove(
-      "is-open",
-      "open",
-      "active"
-    );
-
-    mobileToggle.classList.remove(
-      "is-active"
-    );
-
-    mobileToggle.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-    mobileToggle.setAttribute(
-      "aria-label",
-      "Open navigation"
-    );
-
-    body.classList.remove(
-      "menu-open"
-    );
-  }
-
-  function setupMobileMenu() {
-    createMobileMenu();
-
-    if (!mobileMenu) return;
-
+  function setupViewportState() {
     win.addEventListener(
       "resize",
-      () => {
-        if (win.innerWidth > 700) {
-          closeMobileMenu();
-        }
-      },
+      updateViewportState,
       { passive: true }
     );
 
-    doc.addEventListener(
-      "keydown",
-      (event) => {
-        if (event.key === "Escape") {
-          closeMobileMenu();
+    updateViewportState();
+  }
+
+  /* =======================================================
+     REDUCED MOTION
+     ======================================================= */
+
+  function handleMotionPreferenceChange() {
+    if (prefersReducedMotion()) {
+      parallaxElements.forEach(
+        (element) => {
+          element.style.transform =
+            "none";
+
+          element.style.setProperty(
+            "--parallax-y",
+            "0px"
+          );
         }
-      }
-    );
-  }
-
-  /* =======================================================
-     VIEWPORT STATE
-     ======================================================= */
-
-  function setupResizeState() {
-    const update = () => {
-      state.width =
-        win.innerWidth;
-
-      state.height =
-        win.innerHeight;
-
-      root.style.setProperty(
-        "--viewport-width",
-        `${state.width}px`
       );
 
-      root.style.setProperty(
-        "--viewport-height",
-        `${state.height}px`
+      revealElements.forEach(
+        (element) => {
+          element.classList.add(
+            "is-visible",
+            "revealed",
+            "visible"
+          );
+        }
       );
+    }
 
-      requestScrollUpdate();
-    };
-
-    win.addEventListener(
-      "resize",
-      update,
-      { passive: true }
-    );
-
-    update();
+    requestScrollUpdate();
   }
-
-  /* =======================================================
-     REDUCED MOTION CHANGE
-     ======================================================= */
 
   function setupMotionPreference() {
-    const handleChange = () => {
-      requestScrollUpdate();
-
-      if (isReducedMotion()) {
-        parallaxElements.forEach(
-          (element) => {
-            element.style.transform =
-              "none";
-
-            element.style.setProperty(
-              "--parallax-y",
-              "0px"
-            );
-          }
-        );
-      }
-    };
-
     if (
       typeof reducedMotionQuery.addEventListener ===
       "function"
     ) {
       reducedMotionQuery.addEventListener(
         "change",
-        handleChange
+        handleMotionPreferenceChange
       );
     } else if (
       typeof reducedMotionQuery.addListener ===
       "function"
     ) {
       reducedMotionQuery.addListener(
-        handleChange
+        handleMotionPreferenceChange
       );
     }
   }
@@ -683,17 +745,17 @@
      ======================================================= */
 
   function init() {
-    setupResizeState();
+    setupViewportState();
 
     setupMotionPreference();
 
-    setupRevealAnimations();
+    setupMobileNavigation();
 
     setupSmoothNavigation();
 
-    setupExternalLinks();
+    setupRevealAnimations();
 
-    setupMobileMenu();
+    setupExternalLinks();
 
     updateScrollEffects();
 
@@ -705,7 +767,8 @@
   }
 
   if (
-    doc.readyState === "loading"
+    doc.readyState ===
+    "loading"
   ) {
     doc.addEventListener(
       "DOMContentLoaded",
@@ -715,5 +778,4 @@
   } else {
     init();
   }
-
 })();
