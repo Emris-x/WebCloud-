@@ -1,781 +1,870 @@
-/*
- * =========================================================
- * WebCloud — Production Front-End Interaction System
- * =========================================================
- *
- * Dependency-free.
- *
- * Handles:
- * - Smart sticky header
- * - Working mobile navigation
- * - Smooth anchor navigation
- * - Scroll indicator
- * - Scroll reveal
- * - Lightweight parallax
- * - Cloud / sky movement
- * - Reduced-motion accessibility
- * - Responsive viewport state
- * - External-link safety
- * - Escape-key navigation closing
- * - Body scroll locking while mobile menu is open
- *
- * Designed for the WebCloud one-page experience.
- * =========================================================
- */
+/* =========================================================
+   WEBCLOUD — GLOBAL INTERACTION SYSTEM
+   Version: 2.0
+   Purpose:
+   - Mobile navigation
+   - Smooth scrolling
+   - Active navigation state
+   - Scroll effects
+   - Accessibility
+   - Glass interaction support
+   - Safe multi-page behavior
+   ========================================================= */
 
 (() => {
   "use strict";
 
-  const doc = document;
-  const win = window;
-  const root = doc.documentElement;
-  const body = doc.body;
-
-  const header = doc.querySelector(".site-header");
-  const nav = doc.querySelector(".main-nav");
-  const menuToggle = doc.querySelector(".menu-toggle");
-  const scrollHint = doc.querySelector(".scroll-hint");
-
-  const parallaxElements = Array.from(
-    doc.querySelectorAll(
-      "[data-parallax], .parallax, .cloud, .cloud-layer, .sky-layer"
-    )
-  );
-
-  const revealElements = Array.from(
-    doc.querySelectorAll(
-      "[data-reveal], .reveal, .fade-in, .animate-on-scroll"
-    )
-  );
-
-  const reducedMotionQuery = win.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  );
-
-  const state = {
-    scrollY: 0,
-    width: win.innerWidth,
-    height: win.innerHeight,
-    ticking: false,
-  };
-
-  const MOBILE_BREAKPOINT = 700;
-
   /* =======================================================
-     UTILITIES
+     DOM READY
      ======================================================= */
 
-  const clamp = (value, min, max) =>
-    Math.min(Math.max(value, min), max);
+  const initWebCloud = () => {
 
-  const prefersReducedMotion = () =>
-    reducedMotionQuery.matches;
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
 
-  /* =======================================================
-     HEADER
-     ======================================================= */
+    const body = document.body;
 
-  function updateHeader() {
-    if (!header) return;
+    const menuToggle =
+      document.querySelector(".menu-toggle");
 
-    const scrolled = state.scrollY > 24;
+    const mobileNav =
+      document.querySelector(".mobile-nav");
 
-    header.classList.toggle(
-      "scrolled",
-      scrolled
-    );
+    const mobileNavLinks =
+      mobileNav
+        ? mobileNav.querySelectorAll("a")
+        : [];
 
-    header.classList.toggle(
-      "is-scrolled",
-      scrolled
-    );
+    const header =
+      document.querySelector(".site-header");
 
-    header.setAttribute(
-      "data-scrolled",
-      String(scrolled)
-    );
-  }
+    const allLinks =
+      document.querySelectorAll('a[href]');
 
-  /* =======================================================
-     SCROLL INDICATOR
-     ======================================================= */
 
-  function updateScrollHint() {
-    if (!scrollHint) return;
+    /* =====================================================
+       MOBILE NAVIGATION
+       ===================================================== */
 
-    const fadeDistance = Math.max(
-      state.height * 0.55,
-      1
-    );
+    if (menuToggle && mobileNav) {
 
-    const progress = clamp(
-      state.scrollY / fadeDistance,
-      0,
-      1
-    );
+      const openMenu = () => {
 
-    scrollHint.style.opacity = String(
-      1 - progress
-    );
+        menuToggle.classList.add("is-active");
 
-    scrollHint.style.pointerEvents =
-      progress >= 0.98
-        ? "none"
-        : "";
-  }
+        mobileNav.classList.add("is-open");
 
-  /* =======================================================
-     PARALLAX / CLOUD MOVEMENT
-     ======================================================= */
-
-  function updateParallax() {
-    if (
-      prefersReducedMotion() ||
-      !parallaxElements.length
-    ) {
-      return;
-    }
-
-    parallaxElements.forEach(
-      (element, index) => {
-        const explicitSpeed =
-          Number.parseFloat(
-            element.dataset.parallaxSpeed ||
-              element.dataset.speed ||
-              ""
-          );
-
-        const speed = Number.isFinite(
-          explicitSpeed
-        )
-          ? explicitSpeed
-          : 0.018 +
-            (index % 5) * 0.008;
-
-        const direction =
-          element.dataset.parallaxDirection ===
-          "down"
-            ? 1
-            : -1;
-
-        const offset =
-          state.scrollY *
-          speed *
-          direction;
-
-        const maxOffset = Math.max(
-          state.height * 0.16,
-          50
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "true"
         );
 
-        const safeOffset = clamp(
-          offset,
-          -maxOffset,
-          maxOffset
+        menuToggle.setAttribute(
+          "aria-label",
+          "Close navigation menu"
         );
 
-        element.style.setProperty(
-          "--parallax-y",
-          `${safeOffset.toFixed(2)}px`
+        mobileNav.setAttribute(
+          "aria-hidden",
+          "false"
         );
 
-        /*
-         * Only apply transforms to elements that
-         * are explicitly part of the parallax system.
-         */
-        element.style.transform =
-          `translate3d(0, ${safeOffset.toFixed(
-            2
-          )}px, 0)`;
-      }
-    );
-  }
+        body.classList.add("menu-open");
 
-  /* =======================================================
-     SCROLL ENGINE
-     ======================================================= */
+      };
 
-  function updateScrollEffects() {
-    state.scrollY =
-      win.scrollY ||
-      root.scrollTop ||
-      0;
 
-    updateHeader();
-    updateScrollHint();
-    updateParallax();
+      const closeMenu = () => {
 
-    state.ticking = false;
-  }
+        menuToggle.classList.remove("is-active");
 
-  function requestScrollUpdate() {
-    if (state.ticking) return;
+        mobileNav.classList.remove("is-open");
 
-    state.ticking = true;
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
 
-    if (
-      typeof win.requestAnimationFrame ===
-      "function"
-    ) {
-      win.requestAnimationFrame(
-        updateScrollEffects
-      );
-    } else {
-      updateScrollEffects();
-    }
-  }
+        menuToggle.setAttribute(
+          "aria-label",
+          "Open navigation menu"
+        );
 
-  /* =======================================================
-     MOBILE NAVIGATION
-     ======================================================= */
+        mobileNav.setAttribute(
+          "aria-hidden",
+          "true"
+        );
 
-  function isMobileMenuOpen() {
-    return (
-      menuToggle?.getAttribute(
-        "aria-expanded"
-      ) === "true"
-    );
-  }
+        body.classList.remove("menu-open");
 
-  function openMobileMenu() {
-    if (!menuToggle || !nav) return;
+      };
 
-    nav.classList.add(
-      "is-open",
-      "open",
-      "active"
-    );
 
-    menuToggle.classList.add(
-      "is-active",
-      "active"
-    );
+      const toggleMenu = () => {
 
-    menuToggle.setAttribute(
-      "aria-expanded",
-      "true"
-    );
+        const isOpen =
+          menuToggle.getAttribute(
+            "aria-expanded"
+          ) === "true";
 
-    menuToggle.setAttribute(
-      "aria-label",
-      "Close navigation menu"
-    );
+        if (isOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
 
-    body.classList.add(
-      "menu-open"
-    );
-  }
+      };
 
-  function closeMobileMenu() {
-    if (!menuToggle || !nav) return;
 
-    nav.classList.remove(
-      "is-open",
-      "open",
-      "active"
-    );
-
-    menuToggle.classList.remove(
-      "is-active",
-      "active"
-    );
-
-    menuToggle.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-    menuToggle.setAttribute(
-      "aria-label",
-      "Open navigation menu"
-    );
-
-    body.classList.remove(
-      "menu-open"
-    );
-  }
-
-  function toggleMobileMenu() {
-    if (isMobileMenuOpen()) {
-      closeMobileMenu();
-    } else {
-      openMobileMenu();
-    }
-  }
-
-  function setupMobileNavigation() {
-    if (!menuToggle || !nav) {
-      return;
-    }
-
-    /*
-     * The button already exists in index.html.
-     * We use it directly instead of generating
-     * another button or another navigation.
-     */
-
-    menuToggle.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-    menuToggle.setAttribute(
-      "aria-label",
-      "Open navigation menu"
-    );
-
-    menuToggle.addEventListener(
-      "click",
-      toggleMobileMenu
-    );
-
-    /*
-     * Close the navigation after clicking
-     * any navigation link.
-     */
-
-    nav.querySelectorAll(
-      "a[href]"
-    ).forEach((link) => {
-      link.addEventListener(
+      menuToggle.addEventListener(
         "click",
-        () => {
-          closeMobileMenu();
+        toggleMenu
+      );
+
+
+      /* Close after clicking a navigation link */
+
+      mobileNavLinks.forEach((link) => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            closeMenu();
+
+          }
+        );
+
+      });
+
+
+      /* Close with Escape */
+
+      document.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (
+            event.key === "Escape" &&
+            menuToggle.getAttribute(
+              "aria-expanded"
+            ) === "true"
+          ) {
+
+            closeMenu();
+
+            menuToggle.focus();
+
+          }
+
         }
       );
-    });
 
-    /*
-     * Escape closes the menu.
-     */
 
-    doc.addEventListener(
-      "keydown",
-      (event) => {
-        if (
-          event.key === "Escape" &&
-          isMobileMenuOpen()
-        ) {
-          closeMobileMenu();
+      /* Close when clicking outside */
 
-          menuToggle.focus();
-        }
-      }
-    );
-
-    /*
-     * Clicking outside the navigation
-     * closes it on mobile.
-     */
-
-    doc.addEventListener(
-      "click",
-      (event) => {
-        if (!isMobileMenuOpen()) {
-          return;
-        }
-
-        if (
-          menuToggle.contains(
-            event.target
-          ) ||
-          nav.contains(
-            event.target
-          )
-        ) {
-          return;
-        }
-
-        closeMobileMenu();
-      }
-    );
-
-    /*
-     * Restore desktop state after resizing.
-     */
-
-    win.addEventListener(
-      "resize",
-      () => {
-        if (
-          win.innerWidth >
-          MOBILE_BREAKPOINT
-        ) {
-          closeMobileMenu();
-        }
-      },
-      { passive: true }
-    );
-  }
-
-  /* =======================================================
-     SMOOTH ANCHOR NAVIGATION
-     ======================================================= */
-
-  function setupSmoothNavigation() {
-    const links = Array.from(
-      doc.querySelectorAll(
-        'a[href^="#"]:not([href="#"])'
-      )
-    );
-
-    links.forEach((link) => {
-      link.addEventListener(
+      document.addEventListener(
         "click",
         (event) => {
-          const href =
-            link.getAttribute(
-              "href"
-            );
 
-          if (!href) return;
+          const isOpen =
+            menuToggle.getAttribute(
+              "aria-expanded"
+            ) === "true";
 
-          let target = null;
-
-          try {
-            target =
-              doc.querySelector(
-                href
-              );
-          } catch {
+          if (!isOpen) {
             return;
           }
 
-          if (!target) return;
 
-          event.preventDefault();
+          const clickedInsideMenu =
+            mobileNav.contains(event.target);
 
-          const headerHeight =
-            header
-              ? header.getBoundingClientRect()
-                  .height
-              : 0;
+          const clickedToggle =
+            menuToggle.contains(event.target);
 
-          const targetTop =
-            target.getBoundingClientRect()
-              .top +
-            win.scrollY -
-            headerHeight -
-            12;
 
-          win.scrollTo({
-            top: Math.max(
-              0,
-              targetTop
-            ),
-            behavior:
-              prefersReducedMotion()
-                ? "auto"
-                : "smooth",
-          });
+          if (
+            !clickedInsideMenu &&
+            !clickedToggle
+          ) {
+
+            closeMenu();
+
+          }
+
+        }
+      );
+
+
+      /* Close menu if screen becomes desktop */
+
+      window.addEventListener(
+        "resize",
+        () => {
+
+          if (
+            window.innerWidth > 900 &&
+            menuToggle.getAttribute(
+              "aria-expanded"
+            ) === "true"
+          ) {
+
+            closeMenu();
+
+          }
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       SMOOTH INTERNAL NAVIGATION
+       ===================================================== */
+
+    allLinks.forEach((link) => {
+
+      const href =
+        link.getAttribute("href");
+
+      if (!href) {
+        return;
+      }
+
+
+      /*
+       * Only handle same-page hash links.
+       * External links and other HTML pages are left
+       * completely untouched.
+       */
+
+      if (
+        href.startsWith("#") &&
+        href.length > 1
+      ) {
+
+        link.addEventListener(
+          "click",
+          (event) => {
+
+            const targetId =
+              href.substring(1);
+
+            const target =
+              document.getElementById(
+                targetId
+              );
+
+
+            if (!target) {
+              return;
+            }
+
+
+            event.preventDefault();
+
+
+            const headerHeight =
+              header
+                ? header.offsetHeight
+                : 0;
+
+
+            const targetPosition =
+              target.getBoundingClientRect().top +
+              window.scrollY -
+              headerHeight -
+              20;
+
+
+            window.scrollTo({
+
+              top: Math.max(
+                0,
+                targetPosition
+              ),
+
+              behavior: "smooth"
+
+            });
+
+
+            /*
+             * Update URL without causing
+             * an abrupt browser jump.
+             */
+
+            if (
+              window.history &&
+              window.history.pushState
+            ) {
+
+              window.history.pushState(
+                null,
+                "",
+                href
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+    });
+
+
+
+    /* =====================================================
+       ACTIVE SECTION DETECTION
+       ===================================================== */
+
+    const sections =
+      document.querySelectorAll(
+        "main section[id]"
+      );
+
+    const navLinks =
+      document.querySelectorAll(
+        '.main-nav a[href^="#"]'
+      );
+
+
+    if (
+      sections.length &&
+      navLinks.length &&
+      "IntersectionObserver" in window
+    ) {
+
+      const sectionObserver =
+        new IntersectionObserver(
+          (entries) => {
+
+            entries.forEach(
+              (entry) => {
+
+                if (!entry.isIntersecting) {
+                  return;
+                }
+
+
+                const currentId =
+                  entry.target.id;
+
+
+                navLinks.forEach(
+                  (link) => {
+
+                    const href =
+                      link.getAttribute(
+                        "href"
+                      );
+
+
+                    if (
+                      href ===
+                      `#${currentId}`
+                    ) {
+
+                      link.classList.add(
+                        "is-active"
+                      );
+
+                    } else {
+
+                      link.classList.remove(
+                        "is-active"
+                      );
+
+                    }
+
+                  }
+                );
+
+              }
+            );
+
+          },
+          {
+            root: null,
+
+            rootMargin:
+              "-25% 0px -60% 0px",
+
+            threshold: 0
+          }
+        );
+
+
+      sections.forEach(
+        (section) => {
+
+          sectionObserver.observe(
+            section
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       HEADER SCROLL STATE
+       ===================================================== */
+
+    if (header) {
+
+      let ticking = false;
+
+
+      const updateHeader =
+        () => {
+
+          const scrollY =
+            window.scrollY;
+
+
+          if (scrollY > 40) {
+
+            header.classList.add(
+              "is-scrolled"
+            );
+
+          } else {
+
+            header.classList.remove(
+              "is-scrolled"
+            );
+
+          }
+
+
+          ticking = false;
+
+        };
+
+
+      window.addEventListener(
+        "scroll",
+        () => {
+
+          if (!ticking) {
+
+            window.requestAnimationFrame(
+              updateHeader
+            );
+
+            ticking = true;
+
+          }
+
+        },
+        {
+          passive: true
+        }
+      );
+
+
+      updateHeader();
+
+    }
+
+
+
+    /* =====================================================
+       GLASS CARD POINTER INTERACTION
+       ===================================================== */
+
+    const glassCards =
+      document.querySelectorAll(
+        ".portfolio-card, .glass-card, .contact-links a"
+      );
+
+
+    glassCards.forEach(
+      (card) => {
+
+        card.addEventListener(
+          "pointermove",
+          (event) => {
+
+            const rect =
+              card.getBoundingClientRect();
+
+
+            const x =
+              event.clientX -
+              rect.left;
+
+
+            const y =
+              event.clientY -
+              rect.top;
+
+
+            const percentX =
+              (x / rect.width) * 100;
+
+
+            const percentY =
+              (y / rect.height) * 100;
+
+
+            card.style.setProperty(
+              "--pointer-x",
+              `${percentX}%`
+            );
+
+
+            card.style.setProperty(
+              "--pointer-y",
+              `${percentY}%`
+            );
+
+          }
+        );
+
+
+        card.addEventListener(
+          "pointerleave",
+          () => {
+
+            card.style.removeProperty(
+              "--pointer-x"
+            );
+
+            card.style.removeProperty(
+              "--pointer-y"
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+
+    /* =====================================================
+       HERO PARALLAX
+       ===================================================== */
+
+    const hero =
+      document.querySelector(".hero");
+
+
+    const skyLayers =
+      document.querySelectorAll(
+        ".sky-layer"
+      );
+
+
+    if (
+      hero &&
+      skyLayers.length &&
+      !window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+    ) {
+
+      let parallaxFrame = null;
+
+
+      window.addEventListener(
+        "scroll",
+        () => {
+
+          if (parallaxFrame) {
+            return;
+          }
+
+
+          parallaxFrame =
+            window.requestAnimationFrame(
+              () => {
+
+                const scrollY =
+                  window.scrollY;
+
+
+                if (
+                  scrollY <
+                  window.innerHeight * 1.2
+                ) {
+
+                  skyLayers.forEach(
+                    (layer, index) => {
+
+                      const multiplier =
+                        (index + 1) * 0.035;
+
+
+                      layer.style.transform =
+                        `translate3d(0, ${scrollY * multiplier}px, 0)`;
+
+                    }
+                  );
+
+                }
+
+
+                parallaxFrame = null;
+
+              }
+            );
+
+        },
+        {
+          passive: true
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       IMAGE LOAD ENHANCEMENT
+       ===================================================== */
+
+    const images =
+      document.querySelectorAll(
+        "img"
+      );
+
+
+    images.forEach(
+      (image) => {
+
+        if (
+          image.complete &&
+          image.naturalWidth > 0
+        ) {
+
+          image.classList.add(
+            "is-loaded"
+          );
+
+          return;
+
+        }
+
+
+        image.addEventListener(
+          "load",
+          () => {
+
+            image.classList.add(
+              "is-loaded"
+            );
+
+          },
+          {
+            once: true
+          }
+        );
+
+
+        image.addEventListener(
+          "error",
+          () => {
+
+            image.classList.add(
+              "is-error"
+            );
+
+            console.warn(
+              "WebCloud: Image failed to load:",
+              image.src
+            );
+
+          },
+          {
+            once: true
+          }
+        );
+
+      }
+    );
+
+
+
+    /* =====================================================
+       EXTERNAL LINKS
+       ===================================================== */
+
+    const externalLinks =
+      document.querySelectorAll(
+        'a[href^="http://"], a[href^="https://"]'
+      );
+
+
+    externalLinks.forEach(
+      (link) => {
+
+        const currentHost =
+          window.location.hostname;
+
+
+        try {
+
+          const linkURL =
+            new URL(
+              link.href,
+              window.location.href
+            );
+
 
           /*
-           * Keep the URL clean but still
-           * preserve the section state.
+           * Only add a new tab for genuinely
+           * external destinations.
            */
 
           if (
-            win.history &&
-            typeof win.history.replaceState ===
-              "function"
+            linkURL.hostname &&
+            linkURL.hostname !== currentHost
           ) {
-            win.history.replaceState(
-              null,
-              "",
-              href
+
+            link.setAttribute(
+              "target",
+              "_blank"
             );
+
+
+            link.setAttribute(
+              "rel",
+              "noopener noreferrer"
+            );
+
           }
 
-          closeMobileMenu();
+        } catch (error) {
+
+          console.warn(
+            "WebCloud: Invalid link:",
+            link.href
+          );
+
         }
+
+      }
+    );
+
+
+
+    /* =====================================================
+       REDUCED MOTION ACCESSIBILITY
+       ===================================================== */
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
       );
-    });
-  }
 
-  /* =======================================================
-     SCROLL REVEAL
-     ======================================================= */
 
-  function setupRevealAnimations() {
-    if (!revealElements.length) {
-      return;
-    }
+    const handleMotionPreference =
+      (event) => {
 
-    /*
-     * Accessibility first.
-     */
+        if (event.matches) {
+
+          document.documentElement.classList.add(
+            "reduce-motion"
+          );
+
+        } else {
+
+          document.documentElement.classList.remove(
+            "reduce-motion"
+          );
+
+        }
+
+      };
+
+
+    handleMotionPreference(
+      reducedMotion
+    );
+
 
     if (
-      prefersReducedMotion() ||
-      !(
-        "IntersectionObserver" in
-        win
-      )
+      reducedMotion.addEventListener
     ) {
-      revealElements.forEach(
-        (element) => {
-          element.classList.add(
-            "is-visible",
-            "revealed",
-            "visible"
-          );
 
-          element.style.opacity = "";
-          element.style.transform = "";
-        }
-      );
-
-      return;
-    }
-
-    const observer =
-      new IntersectionObserver(
-        (entries, currentObserver) => {
-          entries.forEach(
-            (entry) => {
-              if (
-                !entry.isIntersecting
-              ) {
-                return;
-              }
-
-              const element =
-                entry.target;
-
-              element.classList.add(
-                "is-visible",
-                "revealed",
-                "visible"
-              );
-
-              currentObserver.unobserve(
-                element
-              );
-            }
-          );
-        },
-        {
-          threshold: 0.12,
-          rootMargin:
-            "0px 0px -8% 0px",
-        }
-      );
-
-    revealElements.forEach(
-      (element) => {
-        observer.observe(
-          element
-        );
-      }
-    );
-  }
-
-  /* =======================================================
-     EXTERNAL LINKS
-     ======================================================= */
-
-  function setupExternalLinks() {
-    const links = Array.from(
-      doc.querySelectorAll(
-        "a[href]"
-      )
-    );
-
-    const currentHost =
-      win.location.hostname;
-
-    links.forEach((link) => {
-      const rawHref =
-        link.getAttribute(
-          "href"
-        );
-
-      if (!rawHref) return;
-
-      /*
-       * Ignore local links and special protocols.
-       */
-
-      if (
-        rawHref.startsWith("#") ||
-        rawHref.startsWith("/") ||
-        rawHref.startsWith("./") ||
-        rawHref.startsWith("../") ||
-        rawHref.startsWith("mailto:") ||
-        rawHref.startsWith("tel:")
-      ) {
-        return;
-      }
-
-      let url;
-
-      try {
-        url = new URL(
-          rawHref,
-          win.location.href
-        );
-      } catch {
-        return;
-      }
-
-      if (
-        url.protocol !==
-          "http:" &&
-        url.protocol !==
-          "https:"
-      ) {
-        return;
-      }
-
-      /*
-       * External links open safely in
-       * a separate tab.
-       */
-
-      if (
-        url.hostname !==
-        currentHost
-      ) {
-        link.target = "_blank";
-        link.rel =
-          "noopener noreferrer";
-      }
-    });
-  }
-
-  /* =======================================================
-     RESPONSIVE VIEWPORT STATE
-     ======================================================= */
-
-  function updateViewportState() {
-    state.width =
-      win.innerWidth;
-
-    state.height =
-      win.innerHeight;
-
-    root.style.setProperty(
-      "--viewport-width",
-      `${state.width}px`
-    );
-
-    root.style.setProperty(
-      "--viewport-height",
-      `${state.height}px`
-    );
-
-    root.classList.toggle(
-      "is-mobile",
-      state.width <=
-        MOBILE_BREAKPOINT
-    );
-
-    root.classList.toggle(
-      "is-desktop",
-      state.width >
-        MOBILE_BREAKPOINT
-    );
-
-    requestScrollUpdate();
-  }
-
-  function setupViewportState() {
-    win.addEventListener(
-      "resize",
-      updateViewportState,
-      { passive: true }
-    );
-
-    updateViewportState();
-  }
-
-  /* =======================================================
-     REDUCED MOTION
-     ======================================================= */
-
-  function handleMotionPreferenceChange() {
-    if (prefersReducedMotion()) {
-      parallaxElements.forEach(
-        (element) => {
-          element.style.transform =
-            "none";
-
-          element.style.setProperty(
-            "--parallax-y",
-            "0px"
-          );
-        }
-      );
-
-      revealElements.forEach(
-        (element) => {
-          element.classList.add(
-            "is-visible",
-            "revealed",
-            "visible"
-          );
-        }
-      );
-    }
-
-    requestScrollUpdate();
-  }
-
-  function setupMotionPreference() {
-    if (
-      typeof reducedMotionQuery.addEventListener ===
-      "function"
-    ) {
-      reducedMotionQuery.addEventListener(
+      reducedMotion.addEventListener(
         "change",
-        handleMotionPreferenceChange
+        handleMotionPreference
       );
-    } else if (
-      typeof reducedMotionQuery.addListener ===
-      "function"
-    ) {
-      reducedMotionQuery.addListener(
-        handleMotionPreferenceChange
-      );
+
     }
-  }
+
+
+
+    /* =====================================================
+       FOOTER YEAR
+       ===================================================== */
+
+    const yearElements =
+      document.querySelectorAll(
+        "[data-current-year]"
+      );
+
+
+    yearElements.forEach(
+      (element) => {
+
+        element.textContent =
+          new Date().getFullYear();
+
+      }
+    );
+
+
+
+    /* =====================================================
+       INITIALIZATION COMPLETE
+       ===================================================== */
+
+    document.documentElement.classList.add(
+      "webcloud-ready"
+    );
+
+
+    console.log(
+      "WebCloud interaction system initialized."
+    );
+
+  };
+
 
   /* =======================================================
-     INITIALIZATION
+     START APPLICATION
      ======================================================= */
-
-  function init() {
-    setupViewportState();
-
-    setupMotionPreference();
-
-    setupMobileNavigation();
-
-    setupSmoothNavigation();
-
-    setupRevealAnimations();
-
-    setupExternalLinks();
-
-    updateScrollEffects();
-
-    win.addEventListener(
-      "scroll",
-      requestScrollUpdate,
-      { passive: true }
-    );
-  }
 
   if (
-    doc.readyState ===
-    "loading"
+    document.readyState === "loading"
   ) {
-    doc.addEventListener(
+
+    document.addEventListener(
       "DOMContentLoaded",
-      init,
-      { once: true }
+      initWebCloud,
+      {
+        once: true
+      }
     );
+
   } else {
-    init();
+
+    initWebCloud();
+
   }
-})();
+
+})()
