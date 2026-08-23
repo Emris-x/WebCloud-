@@ -2,11 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="theme-color" content="#030712">
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="WebCloud">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#030712"
+  >
+
+  <meta
+    name="robots"
+    content="index, follow"
+  >
+
+  <meta
+    name="author"
+    content="WebCloud"
+  >
 
   <meta
     name="description"
@@ -14,89 +29,141 @@
   >
 
   <meta
-    name="keywords"
-    content="WebCloud, website design, web development, business websites, photography websites, real estate websites, hospitality websites, restaurant websites, beauty websites"
+    property="og:type"
+    content="website"
   >
 
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="WebCloud — Websites • Brands • Growth">
+  <meta
+    property="og:title"
+    content="WebCloud — Websites • Brands • Growth"
+  >
+
   <meta
     property="og:description"
     content="Premium websites and digital experiences designed to help ambitious businesses look credible, memorable, and ready for growth."
   >
-  <meta property="og:site_name" content="WebCloud">
-  <meta property="og:image" content="assets/webcloud-logo.png">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="WebCloud — Websites • Brands • Growth">
+  <meta
+    property="og:site_name"
+    content="WebCloud"
+  >
+
+  <meta
+    property="og:image"
+    content="assets/webcloud-logo.png"
+  >
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
+
+  <meta
+    name="twitter:title"
+    content="WebCloud — Websites • Brands • Growth"
+  >
+
   <meta
     name="twitter:description"
     content="Premium websites and digital experiences for ambitious businesses."
   >
-  <meta name="twitter:image" content="assets/webcloud-logo.png">
 
-  <link rel="icon" type="image/png" href="assets/webcloud-logo.png">
+  <meta
+    name="twitter:image"
+    content="assets/webcloud-logo.png"
+  >
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/webcloud-logo.png"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
-  <title>WebCloud — Websites • Brands • Growth</title>
+  <title>
+    WebCloud — Websites • Brands • Growth
+  </title>
 </head>
+
 
 <body>
 
+
   <!-- =====================================================
-       HEADER
+       SITE HEADER
        ===================================================== -->
 
   <header class="site-header">
 
     <a
       class="brand"
-      href="#home"
+      href="index.html"
       aria-label="WebCloud home"
     >
+
       <img
         src="assets/webcloud-logo.png"
         alt="WebCloud"
         width="180"
         height="48"
       >
+
     </a>
 
-    <button
-      class="menu-toggle"
-      type="button"
-      aria-label="Open navigation menu"
-      aria-controls="primary-navigation"
-      aria-expanded="false"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+
+    <!-- Desktop navigation -->
 
     <nav
       class="main-nav"
-      id="primary-navigation"
       aria-label="Primary navigation"
     >
-      <a href="#services">Services</a>
 
-      <a href="products.html">Work</a>
+      <a
+        href="index.html"
+        aria-current="page"
+      >
+        Home
+      </a>
 
-      <a href="#about">About</a>
+      <a href="#services">
+        Services
+      </a>
 
-      <a href="founder.html">Founder</a>
+      <a href="#work">
+        Work
+      </a>
 
-      <a href="#process">Process</a>
+      <a href="products.html">
+        Products
+      </a>
+
+      <a href="founder.html">
+        Founder
+      </a>
+
+      <a href="#contact">
+        Contact
+      </a>
 
       <a
         class="nav-cta"
@@ -104,16 +171,106 @@
       >
         Start a Project
       </a>
+
     </nav>
+
+
+    <!-- Mobile navigation trigger -->
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-navigation"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
 
   </header>
 
 
+
   <!-- =====================================================
-       MAIN
+       MOBILE NAVIGATION
+       ===================================================== -->
+
+  <nav
+    id="mobile-navigation"
+    class="mobile-nav"
+    aria-label="Mobile navigation"
+    aria-hidden="true"
+  >
+
+    <div class="mobile-nav-inner">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="#services">
+        Services
+      </a>
+
+      <a href="#work">
+        Work
+      </a>
+
+      <a href="products.html">
+        Products
+      </a>
+
+      <a href="founder.html">
+        Founder
+      </a>
+
+      <a href="#about">
+        About WebCloud
+      </a>
+
+      <a href="#process">
+        Our Process
+      </a>
+
+      <a href="#industries">
+        Industries
+      </a>
+
+      <a href="#faq">
+        FAQ
+      </a>
+
+      <a href="terms.html">
+        Terms &amp; Conditions
+      </a>
+
+      <a href="privacy.html">
+        Privacy Policy
+      </a>
+
+      <a
+        class="mobile-nav-cta"
+        href="#contact"
+      >
+        Start a Project →
+      </a>
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- =====================================================
+       MAIN CONTENT
        ===================================================== -->
 
   <main>
+
 
     <!-- ===================================================
          HERO
@@ -125,10 +282,26 @@
       aria-labelledby="hero-title"
     >
 
-      <div class="sky-layer sky-layer-back" aria-hidden="true"></div>
-      <div class="sky-layer sky-layer-mid" aria-hidden="true"></div>
-      <div class="sky-layer sky-layer-front" aria-hidden="true"></div>
-      <div class="particle-field" aria-hidden="true"></div>
+      <div
+        class="sky-layer sky-layer-back"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="sky-layer sky-layer-mid"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="sky-layer sky-layer-front"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="particle-field"
+        aria-hidden="true"
+      ></div>
+
 
       <div class="hero-content">
 
@@ -136,27 +309,39 @@
           WEBSITES • BRANDS • GROWTH
         </p>
 
+
         <h1 id="hero-title">
+
           Build a digital presence
+
           <br>
-          <span>worth remembering.</span>
+
+          <span>
+            worth remembering.
+          </span>
+
         </h1>
 
+
         <p class="hero-copy">
+
           WebCloud creates modern, high-performance websites
           and digital experiences that help businesses establish
           credibility, communicate their value, and turn attention
           into opportunity.
+
         </p>
+
 
         <div class="hero-actions">
 
           <a
             class="button button-primary"
-            href="products.html"
+            href="#work"
           >
             Explore Our Work
           </a>
+
 
           <a
             class="button button-secondary"
@@ -169,16 +354,26 @@
 
       </div>
 
-      <div class="scroll-hint" aria-hidden="true">
+
+      <div
+        class="scroll-hint"
+        aria-hidden="true"
+      >
+
         Scroll to explore
-        <span>↓</span>
+
+        <span>
+          ↓
+        </span>
+
       </div>
 
     </section>
 
 
+
     <!-- ===================================================
-         INTRO / VALUE
+         INTRO
          =================================================== -->
 
     <section
@@ -186,31 +381,48 @@
       aria-labelledby="intro-title"
     >
 
-      <p>THE DIGITAL FIRST IMPRESSION</p>
+      <p>
+        THE DIGITAL FIRST IMPRESSION
+      </p>
+
 
       <h2 id="intro-title">
+
         Your business deserves more than a link in your bio.
+
       </h2>
 
+
       <p class="hero-copy">
-        Your website is often the first serious interaction a
-        potential customer has with your business. WebCloud
-        turns that first impression into a digital experience
-        that communicates professionalism, personality, and
-        trust from the first interaction.
+
+        Your website is often the first serious interaction
+        a potential customer has with your business.
+
+        WebCloud turns that first impression into a digital
+        experience that communicates professionalism,
+        personality, and trust from the first interaction.
+
       </p>
+
 
       <div class="contact-links">
 
-        <a href="#services">Explore Services</a>
+        <a href="#services">
+          Explore Services
+        </a>
 
-        <a href="products.html">See Our Work</a>
+        <a href="#work">
+          See Our Work
+        </a>
 
-        <a href="#contact">Talk To Us</a>
+        <a href="#contact">
+          Talk To Us
+        </a>
 
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -223,16 +435,27 @@
       aria-labelledby="services-title"
     >
 
-      <p>SERVICES</p>
+      <p>
+        SERVICES
+      </p>
+
 
       <h2 id="services-title">
-        Everything you need to establish a stronger digital presence.
+
+        Everything you need to establish
+        a stronger digital presence.
+
       </h2>
 
+
       <p class="hero-copy">
+
         We design and build websites around your business,
-        your customers, and the action you want visitors to take.
+        your customers, and the action you want visitors
+        to take.
+
       </p>
+
 
       <div class="contact-links">
 
@@ -273,6 +496,7 @@
     </section>
 
 
+
     <!-- ===================================================
          WHY WEBCLOUD
          =================================================== -->
@@ -282,17 +506,27 @@
       aria-labelledby="why-title"
     >
 
-      <p>WHY WEBCLOUD</p>
+      <p>
+        WHY WEBCLOUD
+      </p>
+
 
       <h2 id="why-title">
+
         Beautiful is only the beginning.
+
       </h2>
 
+
       <p class="hero-copy">
+
         A professional website should do more than look good.
+
         It should make your business easier to understand,
         easier to trust, and easier to contact.
+
       </p>
+
 
       <div class="contact-links">
 
@@ -325,6 +559,7 @@
     </section>
 
 
+
     <!-- ===================================================
          INDUSTRIES
          =================================================== -->
@@ -335,17 +570,27 @@
       aria-labelledby="industries-title"
     >
 
-      <p>INDUSTRIES</p>
+      <p>
+        INDUSTRIES
+      </p>
+
 
       <h2 id="industries-title">
-        Built for businesses where presentation matters.
+
+        Built for businesses where
+        presentation matters.
+
       </h2>
 
+
       <p class="hero-copy">
+
         Our demo concepts focus on industries where customers
         make decisions based on visual presentation, trust,
         experience, and credibility.
+
       </p>
+
 
       <div class="contact-links">
 
@@ -353,7 +598,7 @@
           Photography
         </a>
 
-        <a href="real-estate.html">
+        <a href="realestate.html">
           Real Estate
         </a>
 
@@ -378,8 +623,9 @@
     </section>
 
 
+
     <!-- ===================================================
-         WORK INTRO
+         WORK
          =================================================== -->
 
     <section
@@ -388,28 +634,60 @@
       aria-labelledby="work-title"
     >
 
-      <p>SELECTED WORK</p>
+      <p>
+        SELECTED WORK
+      </p>
+
 
       <h2 id="work-title">
-        Digital experiences designed to make businesses stand out.
+
+        Digital experiences designed
+        to make businesses stand out.
+
       </h2>
 
+
       <p class="hero-copy">
-        Explore selected WebCloud concepts and projects.
-        From business websites to digital products, each project
-        demonstrates a different approach to design, technology,
-        presentation, and user experience.
+
+        Explore selected WebCloud concepts.
+
+        These projects demonstrate how we approach
+        different industries, visual identities,
+        and customer experiences.
+
       </p>
+
 
       <div class="contact-links">
 
         <a href="products.html">
-          Explore the Full Project Showcase →
+          Explore All Products →
+        </a>
+
+        <a href="photographer.html">
+          Photography Demo →
+        </a>
+
+        <a href="realestate.html">
+          Real Estate →
+        </a>
+
+        <a href="beauty.html">
+          Beauty →
+        </a>
+
+        <a href="hospitality.html">
+          Hospitality →
+        </a>
+
+        <a href="restaurant.html">
+          Restaurant →
         </a>
 
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -428,38 +706,53 @@
           01 · PHOTOGRAPHY
         </p>
 
+
         <h2 id="photography-title">
-          Turn your portfolio into a reason to book.
+
+          Turn your portfolio into
+          a reason to book.
+
         </h2>
 
+
         <p class="hero-copy">
+
           A visual-first experience designed for photographers
-          who need their work, personality, and services to make
-          an immediate impression.
+          who need their work, personality, and services to
+          make an immediate impression.
+
         </p>
 
       </div>
 
+
       <div class="portfolio-grid">
 
-        <figure class="portfolio-card portfolio-card-wide">
+        <figure
+          class="portfolio-card portfolio-card-wide"
+        >
 
           <img
             src="assets/photography-hero.png"
             alt="Photography studio website concept"
             width="1600"
             height="900"
-            loading="eager"
-            fetchpriority="high"
+            loading="lazy"
             decoding="async"
           >
 
           <figcaption>
-            <span>01</span>
+
+            <span>
+              01
+            </span>
+
             Studio Experience
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -473,11 +766,17 @@
           >
 
           <figcaption>
-            <span>02</span>
+
+            <span>
+              02
+            </span>
+
             Portfolio
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -491,13 +790,19 @@
           >
 
           <figcaption>
-            <span>03</span>
+
+            <span>
+              03
+            </span>
+
             The Craft
+
           </figcaption>
 
         </figure>
 
       </div>
+
 
       <div class="contact-links">
 
@@ -505,17 +810,19 @@
           Why Photographers Need a Website →
         </a>
 
+
         <a
           href="https://photography-studio-demo.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          View Vera Photography Demo →
+          View Vera Demo →
         </a>
 
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -534,21 +841,31 @@
           02 · REAL ESTATE
         </p>
 
+
         <h2 id="real-estate-title">
-          Make properties feel valuable before the viewing.
+
+          Make properties feel valuable
+          before the viewing.
+
         </h2>
 
+
         <p class="hero-copy">
+
           A premium property experience designed to showcase
-          listings, establish authority, and turn interest into
-          enquiries.
+          listings, establish authority, and turn interest
+          into enquiries.
+
         </p>
 
       </div>
 
+
       <div class="portfolio-grid">
 
-        <figure class="portfolio-card portfolio-card-wide">
+        <figure
+          class="portfolio-card portfolio-card-wide"
+        >
 
           <img
             src="assets/real-estate-hero.png"
@@ -560,11 +877,17 @@
           >
 
           <figcaption>
-            <span>01</span>
+
+            <span>
+              01
+            </span>
+
             Featured Property
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -578,11 +901,17 @@
           >
 
           <figcaption>
-            <span>02</span>
+
+            <span>
+              02
+            </span>
+
             Interior
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -596,27 +925,30 @@
           >
 
           <figcaption>
-            <span>03</span>
+
+            <span>
+              03
+            </span>
+
             Property Detail
+
           </figcaption>
 
         </figure>
 
       </div>
 
+
       <div class="contact-links">
 
-        <a href="real-estate.html">
+        <a href="realestate.html">
           Why Real Estate Businesses Need a Website →
-        </a>
-
-        <a href="#contact">
-          Build a Real Estate Website
         </a>
 
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -635,21 +967,32 @@
           03 · HOSPITALITY
         </p>
 
+
         <h2 id="hospitality-title">
-          Make guests want to stay before they arrive.
+
+          Make guests want to stay
+          before they arrive.
+
         </h2>
 
+
         <p class="hero-copy">
-          Designed for shortlets, serviced apartments, boutique
-          stays, and hospitality brands that want their online
-          presence to reflect the quality of the experience.
+
+          Designed for shortlets, serviced apartments,
+          boutique stays, and hospitality brands that want
+          their online presence to reflect the quality
+          of the experience.
+
         </p>
 
       </div>
 
+
       <div class="portfolio-grid">
 
-        <figure class="portfolio-card portfolio-card-wide">
+        <figure
+          class="portfolio-card portfolio-card-wide"
+        >
 
           <img
             src="assets/hospitality-hero.png"
@@ -661,11 +1004,17 @@
           >
 
           <figcaption>
-            <span>01</span>
+
+            <span>
+              01
+            </span>
+
             The Stay
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -679,11 +1028,17 @@
           >
 
           <figcaption>
-            <span>02</span>
+
+            <span>
+              02
+            </span>
+
             Living Space
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -697,27 +1052,30 @@
           >
 
           <figcaption>
-            <span>03</span>
+
+            <span>
+              03
+            </span>
+
             Lifestyle
+
           </figcaption>
 
         </figure>
 
       </div>
 
+
       <div class="contact-links">
 
         <a href="hospitality.html">
-          Why Hospitality Businesses Need a Website →
-        </a>
-
-        <a href="#contact">
-          Build a Hospitality Website
+          Build a Hospitality Website →
         </a>
 
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -736,20 +1094,31 @@
           04 · BEAUTY
         </p>
 
+
         <h2 id="beauty-title">
-          Give your brand the presence it deserves.
+
+          Give your brand the presence
+          it deserves.
+
         </h2>
 
+
         <p class="hero-copy">
+
           A modern digital home for salons, barbers,
-          hairstylists, makeup artists, and beauty professionals.
+          hairstylists, makeup artists, and beauty
+          professionals.
+
         </p>
 
       </div>
 
+
       <div class="portfolio-grid">
 
-        <figure class="portfolio-card portfolio-card-wide">
+        <figure
+          class="portfolio-card portfolio-card-wide"
+        >
 
           <img
             src="assets/beauty-hero.png"
@@ -761,11 +1130,17 @@
           >
 
           <figcaption>
-            <span>01</span>
+
+            <span>
+              01
+            </span>
+
             The Studio
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -779,11 +1154,17 @@
           >
 
           <figcaption>
-            <span>02</span>
+
+            <span>
+              02
+            </span>
+
             Beauty Portrait
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -797,27 +1178,30 @@
           >
 
           <figcaption>
-            <span>03</span>
+
+            <span>
+              03
+            </span>
+
             Environment
+
           </figcaption>
 
         </figure>
 
       </div>
 
+
       <div class="contact-links">
 
         <a href="beauty.html">
-          Why Beauty Professionals Need a Website →
-        </a>
-
-        <a href="#contact">
-          Build a Beauty Website
+          Why Beauty Businesses Need a Website →
         </a>
 
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -836,21 +1220,31 @@
           05 · RESTAURANTS
         </p>
 
+
         <h2 id="restaurant-title">
-          Make people hungry before they walk through the door.
+
+          Make people hungry before
+          they walk through the door.
+
         </h2>
 
+
         <p class="hero-copy">
+
           A digital experience built around atmosphere,
-          menu presentation, location, reservations, and
-          restaurant personality.
+          menu presentation, location, reservations,
+          and restaurant personality.
+
         </p>
 
       </div>
 
+
       <div class="portfolio-grid">
 
-        <figure class="portfolio-card portfolio-card-wide">
+        <figure
+          class="portfolio-card portfolio-card-wide"
+        >
 
           <img
             src="assets/restaurant-hero.png"
@@ -862,11 +1256,17 @@
           >
 
           <figcaption>
-            <span>01</span>
+
+            <span>
+              01
+            </span>
+
             The Experience
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -880,11 +1280,17 @@
           >
 
           <figcaption>
-            <span>02</span>
+
+            <span>
+              02
+            </span>
+
             The Menu
+
           </figcaption>
 
         </figure>
+
 
         <figure class="portfolio-card">
 
@@ -898,13 +1304,19 @@
           >
 
           <figcaption>
-            <span>03</span>
+
+            <span>
+              03
+            </span>
+
             The Atmosphere
+
           </figcaption>
 
         </figure>
 
       </div>
+
 
       <div class="contact-links">
 
@@ -912,13 +1324,10 @@
           Why Restaurants Need a Website →
         </a>
 
-        <a href="#contact">
-          Build a Restaurant Website
-        </a>
-
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -931,16 +1340,25 @@
       aria-labelledby="process-title"
     >
 
-      <p>OUR PROCESS</p>
+      <p>
+        OUR PROCESS
+      </p>
+
 
       <h2 id="process-title">
+
         From first conversation to launch.
+
       </h2>
 
+
       <p class="hero-copy">
-        We keep the process structured and transparent so you
-        always know what we're working toward.
+
+        We keep the process structured and transparent so
+        you always know what we're working toward.
+
       </p>
+
 
       <div class="contact-links">
 
@@ -973,8 +1391,9 @@
     </section>
 
 
+
     <!-- ===================================================
-         ABOUT WEBCLOUD
+         ABOUT
          =================================================== -->
 
     <section
@@ -983,25 +1402,38 @@
       aria-labelledby="about-title"
     >
 
-      <p>ABOUT WEBCLOUD</p>
+      <p>
+        ABOUT WEBCLOUD
+      </p>
+
 
       <h2 id="about-title">
+
         A digital agency built around one simple idea.
+
       </h2>
 
+
       <p class="hero-copy">
+
         Good businesses deserve good digital experiences.
+
         WebCloud exists to help ambitious businesses build
         an online presence that reflects the quality of what
         they actually offer.
+
       </p>
 
+
       <p class="hero-copy">
+
         We combine thoughtful design, modern web technology,
         clear communication, and business-focused thinking
         to create websites that are not only attractive,
         but useful.
+
       </p>
+
 
       <div class="contact-links">
 
@@ -1010,7 +1442,7 @@
         </a>
 
         <a href="products.html">
-          Our Work
+          Our Products
         </a>
 
         <a href="founder.html">
@@ -1026,14 +1458,15 @@
     </section>
 
 
+
     <!-- ===================================================
-         FOUNDER
+         FOUNDER PREVIEW
          =================================================== -->
 
     <section
-      id="founder"
+      id="founder-preview"
       class="portfolio-section founder-section"
-      aria-labelledby="founder-title"
+      aria-labelledby="founder-preview-title"
     >
 
       <div class="portfolio-heading">
@@ -1042,16 +1475,31 @@
           THE FOUNDER
         </p>
 
-        <h2 id="founder-title">
+
+        <h2 id="founder-preview-title">
+
           Built with a belief that small businesses deserve
           serious digital experiences.
+
         </h2>
+
+
+        <p class="hero-copy">
+
+          WebCloud was founded with a simple objective:
+          help businesses turn their ideas, services,
+          and ambitions into professional digital experiences.
+
+        </p>
 
       </div>
 
+
       <div class="portfolio-grid">
 
-        <figure class="portfolio-card portfolio-card-wide">
+        <figure
+          class="portfolio-card portfolio-card-wide"
+        >
 
           <img
             src="assets/founder-emris.png"
@@ -1063,27 +1511,30 @@
           >
 
           <figcaption>
-            <span>01</span>
+
+            <span>
+              01
+            </span>
+
             Emris Echefu · Founder
+
           </figcaption>
 
         </figure>
 
       </div>
 
+
       <div class="contact-links">
 
         <a href="founder.html">
-          Discover the Founder →
-        </a>
-
-        <a href="#contact">
-          Work With WebCloud
+          Read the Founder's Story →
         </a>
 
       </div>
 
     </section>
+
 
 
     <!-- ===================================================
@@ -1096,11 +1547,17 @@
       aria-labelledby="faq-title"
     >
 
-      <p>FAQ</p>
+      <p>
+        FAQ
+      </p>
+
 
       <h2 id="faq-title">
+
         Questions businesses usually ask.
+
       </h2>
+
 
       <div class="contact-links">
 
@@ -1133,6 +1590,7 @@
     </section>
 
 
+
     <!-- ===================================================
          FINAL CTA
          =================================================== -->
@@ -1143,17 +1601,28 @@
       aria-labelledby="contact-title"
     >
 
-      <p>START A PROJECT</p>
+      <p>
+        START A PROJECT
+      </p>
+
 
       <h2 id="contact-title">
-        Your next website could be the beginning of something bigger.
+
+        Your next website could be the beginning
+        of something bigger.
+
       </h2>
 
+
       <p class="hero-copy">
+
         Tell us what your business does, what you need,
         and what you want your website to achieve.
+
         We'll take it from there.
+
       </p>
+
 
       <div class="contact-links">
 
@@ -1162,23 +1631,25 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          Start on WhatsApp
+          Start on WhatsApp →
         </a>
+
 
         <a
           href="https://www.instagram.com/webcloud111/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Instagram
+          Instagram →
         </a>
+
 
         <a
           href="https://www.facebook.com/share/18KnFaUYQu/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Facebook
+          Facebook →
         </a>
 
       </div>
@@ -1188,15 +1659,19 @@
   </main>
 
 
+
   <!-- =====================================================
        FOOTER
        ===================================================== -->
 
   <footer class="site-footer">
 
+
     <div>
 
-      <strong>WebCloud</strong>
+      <strong>
+        WebCloud
+      </strong>
 
       <p>
         Websites • Brands • Growth
@@ -1205,69 +1680,168 @@
     </div>
 
 
+
     <div>
 
-      <strong>Explore</strong>
+      <strong>
+        Explore
+      </strong>
 
       <p>
-        <a href="#services">Services</a>
+
+        <a href="index.html">
+          Home
+        </a>
+
         ·
-        <a href="products.html">Work</a>
+
+        <a href="#services">
+          Services
+        </a>
+
         ·
-        <a href="#about">About</a>
+
+        <a href="#work">
+          Work
+        </a>
+
         ·
-        <a href="founder.html">Founder</a>
+
+        <a href="products.html">
+          Products
+        </a>
+
         ·
-        <a href="#contact">Contact</a>
+
+        <a href="founder.html">
+          Founder
+        </a>
+
+        ·
+
+        <a href="#contact">
+          Contact
+        </a>
+
       </p>
 
     </div>
 
 
+
     <div>
 
-      <strong>Legal</strong>
+      <strong>
+        Industries
+      </strong>
 
       <p>
+
+        <a href="photographer.html">
+          Photography
+        </a>
+
+        ·
+
+        <a href="realestate.html">
+          Real Estate
+        </a>
+
+        ·
+
+        <a href="beauty.html">
+          Beauty
+        </a>
+
+        ·
+
+        <a href="hospitality.html">
+          Hospitality
+        </a>
+
+        ·
+
+        <a href="restaurant.html">
+          Restaurants
+        </a>
+
+      </p>
+
+    </div>
+
+
+
+    <div>
+
+      <strong>
+        Legal
+      </strong>
+
+      <p>
+
         <a href="terms.html">
           Terms &amp; Conditions
         </a>
+
         ·
+
         <a href="privacy.html">
           Privacy Policy
         </a>
+
       </p>
 
     </div>
 
 
+
     <div>
 
-      <strong>WebCloud</strong>
+      <strong>
+        WebCloud
+      </strong>
+
 
       <p>
+
         A product of
+
         <a
           href="https://archangel-gules.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <strong>Archangel Technologies</strong>
+
+          <strong>
+            Archangel Technologies
+          </strong>
+
         </a>
+
       </p>
 
+
       <p>
+
         A subsidiary of
-        <strong>Emris Industries</strong>
+
+        <strong>
+          Emris Industries
+        </strong>
+
       </p>
 
     </div>
 
 
+
     <div>
 
       <p>
-        © 2026 WebCloud. All rights reserved.
+
+        © 2026 WebCloud.
+        All rights reserved.
+
       </p>
 
     </div>
@@ -1275,11 +1849,13 @@
   </footer>
 
 
+
   <!-- =====================================================
        JAVASCRIPT
        ===================================================== -->
 
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
+
 
 </body>
 </html>
