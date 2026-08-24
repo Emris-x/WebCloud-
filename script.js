@@ -2,17 +2,18 @@
    WEBCLOUD — GLOBAL INTERACTION SYSTEM
    Version: 3.0
    Purpose:
-   - Mobile navigation
-   - Multi-page navigation
+   - Universal mobile navigation
+   - Cross-page navigation support
    - Smooth same-page scrolling
    - Active navigation state
    - Header scroll effects
-   - Glass interaction
+   - Glass pointer interaction
    - Hero parallax
    - Image loading states
    - Accessibility
    - Reduced-motion support
-   - Safe behavior across all WebCloud pages
+   - Dynamic footer year
+   - Safe multi-page behavior
    ========================================================= */
 
 (() => {
@@ -25,23 +26,18 @@
   const initWebCloud = () => {
 
     /* =====================================================
-       DOM ELEMENTS
+       CORE ELEMENTS
        ===================================================== */
 
     const body = document.body;
+    const html = document.documentElement;
 
     const header =
       document.querySelector(".site-header");
 
-    /*
-     * IMPORTANT:
-     * Your CSS uses .mobile-menu-toggle.
-     * We support both names for compatibility.
-     */
-
     const menuToggle =
       document.querySelector(
-        ".mobile-menu-toggle, .menu-toggle"
+        ".mobile-menu-toggle"
       );
 
     const mobileNav =
@@ -62,93 +58,20 @@
 
     if (menuToggle && mobileNav) {
 
-      const setMenuState = (open) => {
+      /*
+       * Keep the initial accessibility state
+       * synchronized with the DOM.
+       */
 
-        menuToggle.classList.toggle(
-          "active",
-          open
-        );
+      menuToggle.setAttribute(
+        "aria-expanded",
+        "false"
+      );
 
-        menuToggle.classList.toggle(
-          "is-active",
-          open
-        );
-
-        mobileNav.classList.toggle(
-          "open",
-          open
-        );
-
-        mobileNav.classList.toggle(
-          "is-open",
-          open
-        );
-
-        menuToggle.setAttribute(
-          "aria-expanded",
-          String(open)
-        );
-
-        menuToggle.setAttribute(
-          "aria-label",
-          open
-            ? "Close navigation menu"
-            : "Open navigation menu"
-        );
-
-        mobileNav.setAttribute(
-          "aria-hidden",
-          String(!open)
-        );
-
-        body.classList.toggle(
-          "menu-open",
-          open
-        );
-
-      };
-
-
-      const isMenuOpen = () => {
-
-        return (
-          menuToggle.getAttribute(
-            "aria-expanded"
-          ) === "true"
-        );
-
-      };
-
-
-      /* Initial accessibility state */
-
-      if (
-        !menuToggle.hasAttribute(
-          "aria-expanded"
-        )
-      ) {
-
-        menuToggle.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-
-      }
-
-
-      if (
-        !menuToggle.hasAttribute(
-          "aria-label"
-        )
-      ) {
-
-        menuToggle.setAttribute(
-          "aria-label",
-          "Open navigation menu"
-        );
-
-      }
-
+      menuToggle.setAttribute(
+        "aria-label",
+        "Open navigation menu"
+      );
 
       mobileNav.setAttribute(
         "aria-hidden",
@@ -156,24 +79,102 @@
       );
 
 
-      /* Toggle */
+      const openMenu = () => {
+
+        menuToggle.classList.add(
+          "is-active"
+        );
+
+        mobileNav.classList.add(
+          "is-open"
+        );
+
+        body.classList.add(
+          "menu-open"
+        );
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+        menuToggle.setAttribute(
+          "aria-label",
+          "Close navigation menu"
+        );
+
+        mobileNav.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+      };
+
+
+      const closeMenu = ({
+        returnFocus = false
+      } = {}) => {
+
+        menuToggle.classList.remove(
+          "is-active"
+        );
+
+        mobileNav.classList.remove(
+          "is-open"
+        );
+
+        body.classList.remove(
+          "menu-open"
+        );
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+        menuToggle.setAttribute(
+          "aria-label",
+          "Open navigation menu"
+        );
+
+        mobileNav.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+
+        if (returnFocus) {
+          menuToggle.focus();
+        }
+
+      };
+
+
+      const toggleMenu = () => {
+
+        const isOpen =
+          menuToggle.getAttribute(
+            "aria-expanded"
+          ) === "true";
+
+        if (isOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+
+      };
+
+
+      /* Toggle menu */
 
       menuToggle.addEventListener(
         "click",
-        (event) => {
-
-          event.preventDefault();
-          event.stopPropagation();
-
-          setMenuState(
-            !isMenuOpen()
-          );
-
-        }
+        toggleMenu
       );
 
 
-      /* Close after selecting a link */
+      /* Close after navigation */
 
       mobileNavLinks.forEach(
         (link) => {
@@ -182,7 +183,7 @@
             "click",
             () => {
 
-              setMenuState(false);
+              closeMenu();
 
             }
           );
@@ -191,7 +192,7 @@
       );
 
 
-      /* Escape key */
+      /* Escape closes menu */
 
       document.addEventListener(
         "keydown",
@@ -199,12 +200,14 @@
 
           if (
             event.key === "Escape" &&
-            isMenuOpen()
+            menuToggle.getAttribute(
+              "aria-expanded"
+            ) === "true"
           ) {
 
-            setMenuState(false);
-
-            menuToggle.focus();
+            closeMenu({
+              returnFocus: true
+            });
 
           }
 
@@ -212,13 +215,18 @@
       );
 
 
-      /* Click outside */
+      /* Click outside closes menu */
 
       document.addEventListener(
         "click",
         (event) => {
 
-          if (!isMenuOpen()) {
+          const isOpen =
+            menuToggle.getAttribute(
+              "aria-expanded"
+            ) === "true";
+
+          if (!isOpen) {
             return;
           }
 
@@ -227,7 +235,6 @@
             mobileNav.contains(
               event.target
             );
-
 
           const clickedToggle =
             menuToggle.contains(
@@ -240,7 +247,7 @@
             !clickedToggle
           ) {
 
-            setMenuState(false);
+            closeMenu();
 
           }
 
@@ -248,20 +255,36 @@
       );
 
 
-      /* Close when returning to desktop */
+      /*
+       * Prevent the mobile menu from remaining open
+       * after switching into desktop width.
+       */
+
+      let resizeTimer = null;
 
       window.addEventListener(
         "resize",
         () => {
 
-          if (
-            window.innerWidth > 720 &&
-            isMenuOpen()
-          ) {
+          clearTimeout(
+            resizeTimer
+          );
 
-            setMenuState(false);
+          resizeTimer =
+            setTimeout(
+              () => {
 
-          }
+                if (
+                  window.innerWidth > 900
+                ) {
+
+                  closeMenu();
+
+                }
+
+              },
+              100
+            );
 
         }
       );
@@ -271,7 +294,7 @@
 
 
     /* =====================================================
-       SMOOTH SAME-PAGE NAVIGATION
+       CROSS-PAGE + SAME-PAGE NAVIGATION
        ===================================================== */
 
     allLinks.forEach(
@@ -280,105 +303,187 @@
         const href =
           link.getAttribute("href");
 
-
         if (!href) {
           return;
         }
 
 
         /*
-         * Only intercept pure hash links.
+         * Only intercept local hash navigation.
          *
          * Examples:
          * #services
-         * #work
          * #contact
+         * index.html#services
          *
-         * We DO NOT interfere with:
-         * products.html
-         * founder.html
-         * terms.html
-         * https://...
+         * External websites and actual HTML pages
+         * remain normal browser navigation.
          */
 
-        if (
-          href.startsWith("#") &&
-          href.length > 1
-        ) {
+        let url;
 
-          link.addEventListener(
-            "click",
-            (event) => {
+        try {
 
-              const targetId =
-                href.substring(1);
-
-              const target =
-                document.getElementById(
-                  targetId
-                );
-
-
-              if (!target) {
-                return;
-              }
-
-
-              event.preventDefault();
-
-
-              const headerHeight =
-                header
-                  ? header.offsetHeight
-                  : 0;
-
-
-              const targetPosition =
-                target.getBoundingClientRect().top +
-                window.scrollY -
-                headerHeight -
-                16;
-
-
-              window.scrollTo({
-
-                top: Math.max(
-                  0,
-                  targetPosition
-                ),
-
-                behavior:
-                  window.matchMedia(
-                    "(prefers-reduced-motion: reduce)"
-                  ).matches
-                    ? "auto"
-                    : "smooth"
-
-              });
-
-
-              /*
-               * Update the URL without
-               * causing the browser to jump.
-               */
-
-              if (
-                window.history &&
-                window.history.pushState
-              ) {
-
-                window.history.pushState(
-                  null,
-                  "",
-                  href
-                );
-
-              }
-
-            }
+          url = new URL(
+            href,
+            window.location.href
           );
 
+        } catch {
+          return;
         }
+
+
+        const isSameOrigin =
+          url.origin ===
+          window.location.origin;
+
+
+        const hasHash =
+          Boolean(url.hash);
+
+
+        if (
+          !isSameOrigin ||
+          !hasHash
+        ) {
+          return;
+        }
+
+
+        /*
+         * Only handle hashes that actually point
+         * to an element on the current document.
+         */
+
+        const targetId =
+          decodeURIComponent(
+            url.hash.substring(1)
+          );
+
+        const target =
+          document.getElementById(
+            targetId
+          );
+
+
+        if (!target) {
+          return;
+        }
+
+
+        /*
+         * Determine whether the destination
+         * is the current page.
+         */
+
+        const currentPath =
+          window.location.pathname
+            .replace(/\/+$/, "");
+
+        const destinationPath =
+          url.pathname
+            .replace(/\/+$/, "");
+
+
+        const samePage =
+          currentPath ===
+          destinationPath ||
+          (
+            destinationPath.endsWith(
+              "/index.html"
+            ) &&
+            (
+              currentPath === "" ||
+              currentPath.endsWith("/")
+            )
+          );
+
+
+        if (!samePage) {
+          return;
+        }
+
+
+        link.addEventListener(
+          "click",
+          (event) => {
+
+            event.preventDefault();
+
+
+            /*
+             * Close mobile navigation
+             * before scrolling.
+             */
+
+            if (
+              menuToggle &&
+              menuToggle.getAttribute(
+                "aria-expanded"
+              ) === "true"
+            ) {
+
+              menuToggle.click();
+
+            }
+
+
+            const headerHeight =
+              header
+                ? header.offsetHeight
+                : 0;
+
+
+            const targetPosition =
+              target.getBoundingClientRect()
+                .top +
+              window.scrollY -
+              headerHeight -
+              20;
+
+
+            const reduceMotion =
+              window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+              ).matches;
+
+
+            window.scrollTo({
+
+              top: Math.max(
+                0,
+                targetPosition
+              ),
+
+              behavior:
+                reduceMotion
+                  ? "auto"
+                  : "smooth"
+
+            });
+
+
+            /*
+             * Update URL without
+             * causing browser jump.
+             */
+
+            if (
+              window.history &&
+              window.history.pushState
+            ) {
+
+              window.history.pushState(
+                null,
+                "",
+                url.hash
+              );
+
+            }
+
+          }
+        );
 
       }
     );
@@ -386,7 +491,80 @@
 
 
     /* =====================================================
-       ACTIVE NAVIGATION
+       HANDLE HASH WHEN PAGE LOADS
+       ===================================================== */
+
+    const initialHash =
+      window.location.hash;
+
+
+    if (initialHash) {
+
+      const initialId =
+        decodeURIComponent(
+          initialHash.substring(1)
+        );
+
+      const initialTarget =
+        document.getElementById(
+          initialId
+        );
+
+
+      if (initialTarget) {
+
+        /*
+         * Give the browser a moment to finish
+         * layout before correcting the position.
+         */
+
+        window.requestAnimationFrame(
+          () => {
+
+            window.setTimeout(
+              () => {
+
+                const headerHeight =
+                  header
+                    ? header.offsetHeight
+                    : 0;
+
+
+                const position =
+                  initialTarget
+                    .getBoundingClientRect()
+                    .top +
+                  window.scrollY -
+                  headerHeight -
+                  20;
+
+
+                window.scrollTo({
+
+                  top: Math.max(
+                    0,
+                    position
+                  ),
+
+                  behavior: "auto"
+
+                });
+
+              },
+              50
+            );
+
+          }
+        );
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       ACTIVE SECTION DETECTION
        ===================================================== */
 
     const sections =
@@ -394,49 +572,16 @@
         "main section[id]"
       );
 
-    const desktopNavLinks =
+
+    const navLinks =
       document.querySelectorAll(
-        '.main-nav a[href^="#"]'
+        ".main-nav a[href*='#']"
       );
-
-    const mobileLinks =
-      document.querySelectorAll(
-        '.mobile-nav a[href^="#"]'
-      );
-
-    const updateActiveLinks =
-      (currentId) => {
-
-        [
-          ...desktopNavLinks,
-          ...mobileLinks
-        ].forEach(
-          (link) => {
-
-            const href =
-              link.getAttribute(
-                "href"
-              );
-
-
-            const active =
-              href ===
-              `#${currentId}`;
-
-
-            link.classList.toggle(
-              "is-active",
-              active
-            );
-
-          }
-        );
-
-      };
 
 
     if (
       sections.length &&
+      navLinks.length &&
       "IntersectionObserver" in window
     ) {
 
@@ -444,30 +589,53 @@
         new IntersectionObserver(
           (entries) => {
 
-            const visibleSections =
-              [...entries]
-                .filter(
-                  (entry) =>
-                    entry.isIntersecting
-                )
-                .sort(
-                  (a, b) =>
-                    b.intersectionRatio -
-                    a.intersectionRatio
+            entries.forEach(
+              (entry) => {
+
+                if (
+                  !entry.isIntersecting
+                ) {
+                  return;
+                }
+
+
+                const currentId =
+                  entry.target.id;
+
+
+                navLinks.forEach(
+                  (link) => {
+
+                    const href =
+                      link.getAttribute(
+                        "href"
+                      );
+
+
+                    if (
+                      href &&
+                      href.endsWith(
+                        `#${currentId}`
+                      )
+                    ) {
+
+                      link.classList.add(
+                        "is-active"
+                      );
+
+                    } else {
+
+                      link.classList.remove(
+                        "is-active"
+                      );
+
+                    }
+
+                  }
                 );
 
-
-            if (
-              visibleSections.length
-            ) {
-
-              updateActiveLinks(
-                visibleSections[0]
-                  .target
-                  .id
-              );
-
-            }
+              }
+            );
 
           },
           {
@@ -476,13 +644,7 @@
             rootMargin:
               "-25% 0px -60% 0px",
 
-            threshold: [
-              0,
-              0.1,
-              0.25,
-              0.5
-            ]
-
+            threshold: 0
           }
         );
 
@@ -502,7 +664,7 @@
 
 
     /* =====================================================
-       HEADER SCROLL EFFECT
+       HEADER SCROLL STATE
        ===================================================== */
 
     if (header) {
@@ -513,22 +675,27 @@
       const updateHeader =
         () => {
 
-          const scrolled =
-            window.scrollY > 40;
+          const scrollY =
+            window.scrollY ||
+            window.pageYOffset ||
+            0;
 
 
-          header.classList.toggle(
-            "scrolled",
-            scrolled
-          );
+          if (
+            scrollY > 40
+          ) {
 
-          header.classList.toggle(
-            "is-scrolled",
-            scrolled
-          );
+            header.classList.add(
+              "is-scrolled"
+            );
 
-          header.dataset.scrolled =
-            String(scrolled);
+          } else {
+
+            header.classList.remove(
+              "is-scrolled"
+            );
+
+          }
 
 
           ticking = false;
@@ -564,7 +731,7 @@
 
 
     /* =====================================================
-       GLASS CARD POINTER EFFECT
+       GLASS / CARD POINTER INTERACTION
        ===================================================== */
 
     const glassCards =
@@ -580,21 +747,6 @@
     glassCards.forEach(
       (card) => {
 
-        /*
-         * Don't run pointer effects on touch-only devices.
-         */
-
-        if (
-          window.matchMedia(
-            "(hover: none)"
-          ).matches
-        ) {
-
-          return;
-
-        }
-
-
         card.addEventListener(
           "pointermove",
           (event) => {
@@ -604,12 +756,10 @@
 
 
             if (
-              !rect.width ||
-              !rect.height
+              rect.width === 0 ||
+              rect.height === 0
             ) {
-
               return;
-
             }
 
 
@@ -673,12 +823,14 @@
     const hero =
       document.querySelector(".hero");
 
+
     const skyLayers =
       document.querySelectorAll(
         ".sky-layer"
       );
 
-    const reducedMotion =
+
+    const reducedMotionQuery =
       window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       );
@@ -687,14 +839,43 @@
     if (
       hero &&
       skyLayers.length &&
-      !reducedMotion.matches &&
-      !window.matchMedia(
-        "(hover: none)"
-      ).matches
+      !reducedMotionQuery.matches
     ) {
 
-      let parallaxFrame =
-        null;
+      let parallaxFrame = null;
+
+
+      const updateParallax =
+        () => {
+
+          const scrollY =
+            window.scrollY;
+
+
+          if (
+            scrollY <
+            window.innerHeight * 1.2
+          ) {
+
+            skyLayers.forEach(
+              (layer, index) => {
+
+                const multiplier =
+                  (index + 1) * 0.035;
+
+
+                layer.style.transform =
+                  `translate3d(0, ${scrollY * multiplier}px, 0)`;
+
+              }
+            );
+
+          }
+
+
+          parallaxFrame = null;
+
+        };
 
 
       window.addEventListener(
@@ -708,38 +889,7 @@
 
           parallaxFrame =
             window.requestAnimationFrame(
-              () => {
-
-                const scrollY =
-                  window.scrollY;
-
-
-                if (
-                  scrollY <
-                  window.innerHeight * 1.2
-                ) {
-
-                  skyLayers.forEach(
-                    (layer, index) => {
-
-                      const multiplier =
-                        (index + 1) *
-                        0.035;
-
-
-                      layer.style.transform =
-                        `translate3d(0, ${scrollY * multiplier}px, 0)`;
-
-                    }
-                  );
-
-                }
-
-
-                parallaxFrame =
-                  null;
-
-              }
+              updateParallax
             );
 
         },
@@ -753,7 +903,7 @@
 
 
     /* =====================================================
-       IMAGE LOADING STATES
+       IMAGE LOAD ENHANCEMENT
        ===================================================== */
 
     const images =
@@ -801,6 +951,7 @@
             image.classList.add(
               "is-error"
             );
+
 
             console.warn(
               "WebCloud: Image failed to load:",
@@ -883,24 +1034,35 @@
     const handleMotionPreference =
       (event) => {
 
-        document.documentElement.classList.toggle(
-          "reduce-motion",
+        if (
           event.matches
-        );
+        ) {
+
+          html.classList.add(
+            "reduce-motion"
+          );
+
+        } else {
+
+          html.classList.remove(
+            "reduce-motion"
+          );
+
+        }
 
       };
 
 
     handleMotionPreference(
-      reducedMotion
+      reducedMotionQuery
     );
 
 
     if (
-      reducedMotion.addEventListener
+      reducedMotionQuery.addEventListener
     ) {
 
-      reducedMotion.addEventListener(
+      reducedMotionQuery.addEventListener(
         "change",
         handleMotionPreference
       );
@@ -910,7 +1072,7 @@
 
 
     /* =====================================================
-       FOOTER YEAR
+       CURRENT YEAR
        ===================================================== */
 
     const yearElements =
@@ -923,7 +1085,8 @@
       (element) => {
 
         element.textContent =
-          new Date().getFullYear();
+          new Date()
+            .getFullYear();
 
       }
     );
@@ -931,43 +1094,32 @@
 
 
     /* =====================================================
-       PAGE LOAD STATE
+       PAGE READY STATE
        ===================================================== */
 
-    document.documentElement.classList.add(
+    html.classList.add(
       "webcloud-ready"
     );
 
 
     /*
-     * Prevent accidental flash of an open
-     * mobile menu when the page loads.
+     * Small accessibility enhancement:
+     * expose the navigation only after JS
+     * has initialized.
      */
 
-    if (
-      mobileNav &&
-      menuToggle
-    ) {
+    if (mobileNav) {
 
-      mobileNav.classList.remove(
-        "open",
-        "is-open"
-      );
-
-      menuToggle.classList.remove(
-        "active",
-        "is-active"
+      mobileNav.setAttribute(
+        "aria-hidden",
+        "true"
       );
 
     }
 
 
-    /* =====================================================
-       DEBUG
-       ===================================================== */
-
     console.log(
-      "WebCloud 3.0 interaction system initialized."
+      "WebCloud interaction system initialized — v3.0"
     );
 
   };
