@@ -2,81 +2,179 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="theme-color" content="#030712">
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="WebCloud">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#030712"
+  >
+
+  <meta
+    name="robots"
+    content="index, follow"
+  >
+
+  <meta
+    name="author"
+    content="WebCloud"
+  >
 
   <meta
     name="description"
-    content="WebCloud creates premium websites and digital experiences for ambitious businesses, creators, and local brands."
+    content="WebCloud designs premium, modern websites and digital experiences for ambitious businesses, creators, and local brands."
   >
 
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="WebCloud — Websites • Brands • Growth">
+  <meta
+    name="keywords"
+    content="Web design, website development, business websites, premium websites, website redesign, WebCloud"
+  >
+
+  <!-- =====================================================
+       OPEN GRAPH
+       ===================================================== -->
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    property="og:title"
+    content="WebCloud — Websites • Brands • Growth"
+  >
+
   <meta
     property="og:description"
-    content="Premium websites and digital experiences designed to help ambitious businesses look credible, memorable, and ready for growth."
+    content="Premium websites and digital experiences designed to make ambitious businesses look credible, memorable, and ready for growth."
   >
-  <meta property="og:site_name" content="WebCloud">
-  <meta property="og:image" content="assets/webcloud-logo.png">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="WebCloud — Websites • Brands • Growth">
+  <meta
+    property="og:site_name"
+    content="WebCloud"
+  >
+
+  <meta
+    property="og:image"
+    content="assets/webcloud-logo.png"
+  >
+
+  <!-- =====================================================
+       TWITTER / X
+       ===================================================== -->
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
+
+  <meta
+    name="twitter:title"
+    content="WebCloud — Websites • Brands • Growth"
+  >
+
   <meta
     name="twitter:description"
     content="Premium websites and digital experiences for ambitious businesses."
   >
-  <meta name="twitter:image" content="assets/webcloud-logo.png">
 
-  <link rel="icon" type="image/png" href="assets/webcloud-logo.png">
+  <meta
+    name="twitter:image"
+    content="assets/webcloud-logo.png"
+  >
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- =====================================================
+       FAVICON
+       ===================================================== -->
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/webcloud-logo.png"
+  >
+
+  <!-- =====================================================
+       FONTS
+       ===================================================== -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="styles.css">
+  <!-- =====================================================
+       STYLES
+       ===================================================== -->
 
-  <title>WebCloud — Websites • Brands • Growth</title>
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+  <title>
+    WebCloud — Websites • Brands • Growth
+  </title>
 </head>
+
 
 <body>
 
   <!-- =====================================================
-       SKIP LINK
+       ACCESSIBILITY
        ===================================================== -->
 
-  <a class="skip-link" href="#main-content">
+  <a
+    class="skip-link"
+    href="#main-content"
+  >
     Skip to content
   </a>
 
 
   <!-- =====================================================
-       HEADER
+       SITE HEADER
        ===================================================== -->
 
-  <header class="site-header" id="site-header">
+  <header
+    class="site-header"
+    id="site-header"
+  >
+
+    <!-- BRAND -->
 
     <a
       class="brand"
       href="index.html"
       aria-label="WebCloud home"
     >
+
       <img
         src="assets/webcloud-logo.png"
         alt="WebCloud"
         width="180"
         height="48"
       >
+
     </a>
 
 
-    <!-- DESKTOP NAVIGATION -->
+    <!-- ===================================================
+         DESKTOP NAVIGATION
+         =================================================== -->
 
     <nav
       class="main-nav"
@@ -91,20 +189,20 @@
         Work
       </a>
 
-      <a href="index.html#about">
-        About
-      </a>
-
-      <a href="founder.html">
-        Founder
+      <a href="index.html#industries">
+        Industries
       </a>
 
       <a href="products.html">
         Products
       </a>
 
-      <a href="terms.html">
-        Terms
+      <a href="founder.html">
+        Founder
+      </a>
+
+      <a href="index.html#about">
+        About
       </a>
 
       <a
@@ -117,7 +215,9 @@
     </nav>
 
 
-    <!-- MOBILE MENU BUTTON -->
+    <!-- ===================================================
+         MOBILE MENU BUTTON
+         =================================================== -->
 
     <button
       class="mobile-menu-toggle"
@@ -128,14 +228,16 @@
       aria-controls="mobile-nav"
     >
 
-      <span></span>
-      <span></span>
-      <span></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
 
     </button>
 
 
-    <!-- MOBILE NAVIGATION -->
+    <!-- ===================================================
+         MOBILE NAVIGATION
+         =================================================== -->
 
     <nav
       class="mobile-nav"
@@ -144,52 +246,60 @@
       aria-hidden="true"
     >
 
-      <a href="index.html#home">
-        Home
-      </a>
+      <div class="mobile-nav-inner">
 
-      <a href="index.html#services">
-        Services
-      </a>
+        <a href="index.html#home">
+          Home
+        </a>
 
-      <a href="products.html">
-        Products
-      </a>
+        <a href="index.html#services">
+          Services
+        </a>
 
-      <a href="index.html#work">
-        Our Work
-      </a>
+        <a href="index.html#work">
+          Work
+        </a>
 
-      <a href="index.html#industries">
-        Industries
-      </a>
+        <a href="index.html#industries">
+          Industries
+        </a>
 
-      <a href="founder.html">
-        Founder
-      </a>
+        <a href="products.html">
+          Products
+        </a>
 
-      <a href="index.html#process">
-        Process
-      </a>
+        <a href="founder.html">
+          Founder
+        </a>
 
-      <a href="index.html#about">
-        About
-      </a>
+        <a href="index.html#process">
+          Process
+        </a>
 
-      <a href="terms.html">
-        Terms &amp; Conditions
-      </a>
+        <a href="index.html#about">
+          About
+        </a>
 
-      <a href="privacy.html">
-        Privacy Policy
-      </a>
+        <a href="index.html#faq">
+          FAQ
+        </a>
 
-      <a
-        class="nav-cta"
-        href="index.html#contact"
-      >
-        Start a Project
-      </a>
+        <a href="terms.html">
+          Terms &amp; Conditions
+        </a>
+
+        <a href="privacy.html">
+          Privacy Policy
+        </a>
+
+        <a
+          class="nav-cta"
+          href="index.html#contact"
+        >
+          Start a Project
+        </a>
+
+      </div>
 
     </nav>
 
@@ -197,7 +307,7 @@
 
 
   <!-- =====================================================
-       MAIN
+       MAIN CONTENT
        ===================================================== -->
 
   <main id="main-content">
@@ -241,16 +351,22 @@
         </p>
 
         <h1 id="hero-title">
+
           Build a digital presence
           <br>
-          <span>worth remembering.</span>
+
+          <span>
+            worth remembering.
+          </span>
+
         </h1>
 
+
         <p class="hero-copy">
-          WebCloud creates modern, high-performance websites
-          and digital experiences that help businesses establish
-          credibility, communicate their value, and turn attention
-          into opportunity.
+          WebCloud designs and builds modern digital
+          experiences that help ambitious businesses
+          look credible, communicate clearly, and turn
+          attention into opportunity.
         </p>
 
 
@@ -279,8 +395,13 @@
         class="scroll-hint"
         aria-hidden="true"
       >
+
         Scroll to explore
-        <span>↓</span>
+
+        <span>
+          ↓
+        </span>
+
       </div>
 
     </section>
@@ -299,16 +420,18 @@
         THE DIGITAL FIRST IMPRESSION
       </p>
 
+
       <h2 id="intro-title">
         Your business deserves more than a link in your bio.
       </h2>
 
+
       <p class="hero-copy">
-        Your website is often the first serious interaction a
-        potential customer has with your business. WebCloud
-        turns that first impression into a digital experience
-        that communicates professionalism, personality, and
-        trust from the first interaction.
+        Your website is often the first serious interaction
+        a potential customer has with your business.
+        WebCloud turns that first impression into a digital
+        experience built around professionalism, personality,
+        clarity, and trust.
       </p>
 
 
@@ -341,15 +464,20 @@
       aria-labelledby="services-title"
     >
 
-      <p>SERVICES</p>
+      <p>
+        SERVICES
+      </p>
+
 
       <h2 id="services-title">
         Everything you need to establish a stronger digital presence.
       </h2>
 
+
       <p class="hero-copy">
         We design and build websites around your business,
-        your customers, and the action you want visitors to take.
+        your customers, your identity, and the action you
+        want visitors to take.
       </p>
 
 
@@ -401,11 +529,15 @@
       aria-labelledby="why-title"
     >
 
-      <p>WHY WEBCLOUD</p>
+      <p>
+        WHY WEBCLOUD
+      </p>
+
 
       <h2 id="why-title">
         Beautiful is only the beginning.
       </h2>
+
 
       <p class="hero-copy">
         A professional website should do more than look good.
@@ -455,16 +587,20 @@
       aria-labelledby="industries-title"
     >
 
-      <p>INDUSTRIES</p>
+      <p>
+        INDUSTRIES
+      </p>
+
 
       <h2 id="industries-title">
         Built for businesses where presentation matters.
       </h2>
 
+
       <p class="hero-copy">
-        Our demo concepts focus on industries where customers
-        make decisions based on visual presentation, trust,
-        experience, and credibility.
+        Our concepts focus on industries where customers
+        make decisions based on visual presentation,
+        trust, experience, and credibility.
       </p>
 
 
@@ -509,24 +645,24 @@
       aria-labelledby="work-title"
     >
 
-      <p>SELECTED WORK</p>
+      <p>
+        SELECTED WORK
+      </p>
+
 
       <h2 id="work-title">
         Digital experiences designed to make businesses stand out.
       </h2>
 
+
       <p class="hero-copy">
-        Explore selected WebCloud concepts. These projects
-        demonstrate how we approach different industries,
-        visual identities, and customer experiences.
+        Explore selected WebCloud concepts demonstrating
+        different industries, visual identities, and
+        customer experiences.
       </p>
 
 
       <div class="contact-links">
-
-        <a href="products.html">
-          Explore Products
-        </a>
 
         <a href="#photography">
           Photography
@@ -546,6 +682,10 @@
 
         <a href="#restaurant">
           Restaurants
+        </a>
+
+        <a href="products.html">
+          Explore Products
         </a>
 
       </div>
@@ -569,9 +709,11 @@
           01 · PHOTOGRAPHY
         </p>
 
+
         <h2 id="photography-title">
           Turn your portfolio into a reason to book.
         </h2>
+
 
         <p class="hero-copy">
           A visual-first experience designed for photographers
@@ -650,6 +792,7 @@
           Why Photographers Need a Website
         </a>
 
+
         <a
           href="https://photography-studio-demo.vercel.app/"
           target="_blank"
@@ -679,14 +822,16 @@
           02 · REAL ESTATE
         </p>
 
+
         <h2 id="real-estate-title">
           Make properties feel valuable before the viewing.
         </h2>
 
+
         <p class="hero-copy">
           A premium property experience designed to showcase
-          listings, establish authority, and turn interest into
-          enquiries.
+          listings, establish authority, and turn interest
+          into enquiries.
         </p>
 
       </div>
@@ -780,9 +925,11 @@
           03 · HOSPITALITY
         </p>
 
+
         <h2 id="hospitality-title">
           Make guests want to stay before they arrive.
         </h2>
+
 
         <p class="hero-copy">
           Designed for shortlets, serviced apartments, boutique
@@ -881,9 +1028,11 @@
           04 · BEAUTY
         </p>
 
+
         <h2 id="beauty-title">
           Give your brand the presence it deserves.
         </h2>
+
 
         <p class="hero-copy">
           A modern digital home for salons, barbers,
@@ -981,9 +1130,11 @@
           05 · RESTAURANTS
         </p>
 
+
         <h2 id="restaurant-title">
           Make people hungry before they walk through the door.
         </h2>
+
 
         <p class="hero-copy">
           A digital experience built around atmosphere,
@@ -1076,15 +1227,19 @@
       aria-labelledby="process-title"
     >
 
-      <p>OUR PROCESS</p>
+      <p>
+        OUR PROCESS
+      </p>
+
 
       <h2 id="process-title">
         From first conversation to launch.
       </h2>
 
+
       <p class="hero-copy">
-        We keep the process structured and transparent so you
-        always know what we're working toward.
+        We keep the process structured and transparent
+        so you always know what we're working toward.
       </p>
 
 
@@ -1129,11 +1284,15 @@
       aria-labelledby="about-title"
     >
 
-      <p>ABOUT WEBCLOUD</p>
+      <p>
+        ABOUT WEBCLOUD
+      </p>
+
 
       <h2 id="about-title">
         A digital agency built around one simple idea.
       </h2>
+
 
       <p class="hero-copy">
         Good businesses deserve good digital experiences.
@@ -1141,6 +1300,7 @@
         an online presence that reflects the quality of what
         they actually offer.
       </p>
+
 
       <p class="hero-copy">
         We combine thoughtful design, modern web technology,
@@ -1188,6 +1348,7 @@
         <p class="eyebrow">
           THE FOUNDER
         </p>
+
 
         <h2 id="founder-title">
           Built with a belief that small businesses deserve
@@ -1245,7 +1406,10 @@
       aria-labelledby="faq-title"
     >
 
-      <p>FAQ</p>
+      <p>
+        FAQ
+      </p>
+
 
       <h2 id="faq-title">
         Questions businesses usually ask.
@@ -1284,7 +1448,7 @@
 
 
     <!-- ===================================================
-         FINAL CTA
+         FINAL CTA / CONTACT
          =================================================== -->
 
     <section
@@ -1293,11 +1457,15 @@
       aria-labelledby="contact-title"
     >
 
-      <p>START A PROJECT</p>
+      <p>
+        START A PROJECT
+      </p>
+
 
       <h2 id="contact-title">
         Your next website could be the beginning of something bigger.
       </h2>
+
 
       <p class="hero-copy">
         Tell us what your business does, what you need,
@@ -1316,6 +1484,7 @@
           Start on WhatsApp
         </a>
 
+
         <a
           href="https://www.instagram.com/webcloud111/"
           target="_blank"
@@ -1323,6 +1492,7 @@
         >
           Instagram
         </a>
+
 
         <a
           href="https://www.facebook.com/share/18KnFaUYQu/"
@@ -1345,9 +1515,12 @@
 
   <footer class="site-footer">
 
+
     <div>
 
-      <strong>WebCloud</strong>
+      <strong>
+        WebCloud
+      </strong>
 
       <p>
         Websites • Brands • Growth
@@ -1358,18 +1531,52 @@
 
     <div>
 
-      <strong>Explore</strong>
+      <strong>
+        Explore
+      </strong>
 
       <p>
-        <a href="index.html#services">Services</a>
+
+        <a href="index.html">
+          Home
+        </a>
+
         ·
-        <a href="products.html">Products</a>
+
+        <a href="index.html#services">
+          Services
+        </a>
+
         ·
-        <a href="index.html#work">Work</a>
+
+        <a href="index.html#work">
+          Work
+        </a>
+
         ·
-        <a href="founder.html">Founder</a>
+
+        <a href="index.html#industries">
+          Industries
+        </a>
+
         ·
-        <a href="index.html#contact">Contact</a>
+
+        <a href="products.html">
+          Products
+        </a>
+
+        ·
+
+        <a href="founder.html">
+          Founder
+        </a>
+
+        ·
+
+        <a href="index.html#contact">
+          Contact
+        </a>
+
       </p>
 
     </div>
@@ -1377,16 +1584,22 @@
 
     <div>
 
-      <strong>Legal</strong>
+      <strong>
+        Legal
+      </strong>
 
       <p>
+
         <a href="terms.html">
           Terms &amp; Conditions
         </a>
+
         ·
+
         <a href="privacy.html">
           Privacy Policy
         </a>
+
       </p>
 
     </div>
@@ -1394,16 +1607,24 @@
 
     <div>
 
-      <strong>WebCloud</strong>
+      <strong>
+        WebCloud
+      </strong>
+
 
       <p>
         A product of
-        <strong>Archangel Technologies</strong>
+        <strong>
+          Archangel Technologies
+        </strong>
       </p>
+
 
       <p>
         A subsidiary of
-        <strong>Emris Industries</strong>
+        <strong>
+          Emris Industries
+        </strong>
       </p>
 
     </div>
@@ -1412,7 +1633,11 @@
     <div>
 
       <p>
-        © 2026 WebCloud. All rights reserved.
+        ©
+        <span data-current-year>
+          2026
+        </span>
+        WebCloud. All rights reserved.
       </p>
 
     </div>
@@ -1424,7 +1649,10 @@
        JAVASCRIPT
        ===================================================== -->
 
-  <script src="script.js"></script>
+  <script
+    src="script.js"
+    defer
+  ></script>
 
 </body>
 </html>
