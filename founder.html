@@ -2,56 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="theme-color"
-    content="#030712"
-  >
-
-  <meta
-    name="robots"
-    content="index, follow"
-  >
-
-  <meta
-    name="author"
-    content="Emris Echefu"
-  >
+  <meta name="theme-color" content="#030712">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="WebCloud">
 
   <meta
     name="description"
-    content="Meet Emris Echefu, founder of WebCloud and the creative mind behind its mission to help ambitious businesses build stronger digital identities."
+    content="Meet Emris Echefu, founder of WebCloud — building premium websites, digital experiences, and technology for ambitious businesses."
   >
 
-  <meta
-    property="og:type"
-    content="profile"
-  >
-
-  <meta
-    property="og:title"
-    content="The Founder — WebCloud"
-  >
-
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Founder — WebCloud">
   <meta
     property="og:description"
     content="Meet Emris Echefu, founder of WebCloud."
   >
+  <meta property="og:site_name" content="WebCloud">
+  <meta property="og:image" content="assets/founder-emris.png">
 
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Founder — WebCloud">
   <meta
-    property="og:site_name"
-    content="WebCloud"
+    name="twitter:description"
+    content="Meet Emris Echefu, founder of WebCloud."
   >
-
-  <meta
-    property="og:image"
-    content="assets/founder-emris.png"
-  >
+  <meta name="twitter:image" content="assets/founder-emris.png">
 
   <link
     rel="icon"
@@ -59,11 +36,7 @@
     href="assets/webcloud-logo.png"
   >
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     rel="preconnect"
     href="https://fonts.gstatic.com"
@@ -75,23 +48,387 @@
     rel="stylesheet"
   >
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
+  <link rel="stylesheet" href="styles.css">
 
-  <title>
-    The Founder — WebCloud
-  </title>
+  <title>Founder — WebCloud</title>
+
+
+  <!-- =====================================================
+       FOUNDER PAGE ONLY STYLES
+       ===================================================== -->
+
+  <style>
+
+    /*
+     * =====================================================
+     * CINEMATIC FOUNDER HERO
+     * =====================================================
+     */
+
+    .founder-hero {
+      position: relative;
+      min-height: 100svh;
+      overflow: hidden;
+
+      display: flex;
+      align-items: center;
+
+      background:
+        #030712
+        url("assets/founder-emris.png")
+        center center
+        / cover
+        no-repeat;
+
+      isolation: isolate;
+    }
+
+
+    /*
+     * Dark cinematic overlay.
+     *
+     * The left side stays darker for text readability,
+     * while the right side allows more of the portrait
+     * to remain visible.
+     */
+
+    .founder-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(3, 7, 18, 0.96) 0%,
+          rgba(3, 7, 18, 0.82) 32%,
+          rgba(3, 7, 18, 0.45) 62%,
+          rgba(3, 7, 18, 0.20) 100%
+        );
+    }
+
+
+    /*
+     * Bottom fade into the WebCloud page.
+     */
+
+    .founder-hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 42%;
+
+      z-index: -1;
+
+      background:
+        linear-gradient(
+          to bottom,
+          transparent,
+          #030712
+        );
+
+      pointer-events: none;
+    }
+
+
+    /*
+     * Keep the existing decorative sky layers subtle
+     * so they don't overpower the actual portrait.
+     */
+
+    .founder-hero .sky-layer {
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+
+    .founder-hero .particle-field {
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+
+    /*
+     * Hero content.
+     */
+
+    .founder-hero .hero-content {
+      position: relative;
+      z-index: 5;
+
+      width: min(760px, 100%);
+
+      padding-top: 90px;
+      padding-bottom: 90px;
+    }
+
+
+    /*
+     * Founder eyebrow.
+     */
+
+    .founder-hero .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      margin-bottom: 24px;
+
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+
+
+    .founder-hero .eyebrow::before {
+      content: "";
+
+      display: inline-block;
+
+      width: 34px;
+      height: 1px;
+
+      background: currentColor;
+
+      opacity: 0.7;
+    }
+
+
+    /*
+     * Main founder heading.
+     */
+
+    .founder-hero h1 {
+      max-width: 760px;
+
+      margin-bottom: 28px;
+
+      font-size: clamp(
+        3.5rem,
+        8vw,
+        7rem
+      );
+
+      line-height: 0.94;
+      letter-spacing: -0.055em;
+    }
+
+
+    .founder-hero h1 span {
+      display: inline-block;
+    }
+
+
+    /*
+     * Hero description.
+     */
+
+    .founder-hero .hero-copy {
+      max-width: 610px;
+
+      font-size: clamp(
+        1rem,
+        2vw,
+        1.2rem
+      );
+
+      line-height: 1.75;
+
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+
+    /*
+     * Buttons.
+     */
+
+    .founder-hero .hero-actions {
+      margin-top: 34px;
+    }
+
+
+    /*
+     * Subtle glass treatment around the hero controls.
+     */
+
+    .founder-hero .button {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+
+    /*
+     * Scroll indicator.
+     */
+
+    .founder-hero .scroll-hint {
+      position: absolute;
+
+      left: clamp(24px, 5vw, 70px);
+      bottom: 34px;
+
+      z-index: 10;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+
+      opacity: 0.65;
+    }
+
+
+    .founder-hero .scroll-hint span {
+      font-size: 1.2rem;
+    }
+
+
+    /*
+     * Founder story image is no longer necessary because
+     * the hero itself uses the founder photograph.
+     *
+     * We keep the section elegant and text-focused.
+     */
+
+    .founder-story-section {
+      position: relative;
+    }
+
+
+    /*
+     * Mobile optimisation.
+     */
+
+    @media (max-width: 900px) {
+
+      .founder-hero {
+        min-height: 100svh;
+
+        background-position:
+          65% center;
+      }
+
+
+      .founder-hero::before {
+        background:
+          linear-gradient(
+            180deg,
+            rgba(3, 7, 18, 0.84) 0%,
+            rgba(3, 7, 18, 0.60) 45%,
+            rgba(3, 7, 18, 0.88) 100%
+          );
+      }
+
+
+      .founder-hero::after {
+        height: 30%;
+      }
+
+
+      .founder-hero .hero-content {
+        padding-top: 120px;
+        padding-bottom: 120px;
+      }
+
+
+      .founder-hero h1 {
+        font-size: clamp(
+          3.1rem,
+          15vw,
+          5.5rem
+        );
+      }
+
+
+      .founder-hero .hero-copy {
+        max-width: 92%;
+      }
+
+    }
+
+
+    /*
+     * Smaller phones.
+     */
+
+    @media (max-width: 600px) {
+
+      .founder-hero {
+        background-position:
+          64% center;
+      }
+
+
+      .founder-hero .hero-content {
+        padding-top: 105px;
+        padding-bottom: 105px;
+      }
+
+
+      .founder-hero .hero-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+
+      .founder-hero .button {
+        width: 100%;
+        text-align: center;
+      }
+
+
+      .founder-hero .scroll-hint {
+        left: 20px;
+        bottom: 20px;
+      }
+
+    }
+
+
+    /*
+     * Reduced motion accessibility.
+     */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .founder-hero {
+        background-attachment: scroll;
+      }
+
+    }
+
+  </style>
+
 </head>
 
+
 <body>
+
+  <!-- =====================================================
+       SKIP LINK
+       ===================================================== -->
+
+  <a
+    class="skip-link"
+    href="#main-content"
+  >
+    Skip to content
+  </a>
+
 
   <!-- =====================================================
        HEADER
        ===================================================== -->
 
-  <header class="site-header">
+  <header
+    class="site-header"
+    id="site-header"
+  >
 
     <a
       class="brand"
@@ -109,6 +446,10 @@
     </a>
 
 
+    <!-- ===================================================
+         DESKTOP NAVIGATION
+         =================================================== -->
+
     <nav
       class="main-nav"
       aria-label="Primary navigation"
@@ -118,8 +459,12 @@
         Services
       </a>
 
-      <a href="products.html">
+      <a href="index.html#work">
         Work
+      </a>
+
+      <a href="index.html#about">
+        About
       </a>
 
       <a
@@ -129,8 +474,12 @@
         Founder
       </a>
 
-      <a href="index.html#about">
-        About
+      <a href="products.html">
+        Products
+      </a>
+
+      <a href="terms.html">
+        Terms
       </a>
 
       <a
@@ -143,11 +492,17 @@
     </nav>
 
 
+    <!-- ===================================================
+         MOBILE MENU BUTTON
+         =================================================== -->
+
     <button
-      class="menu-toggle"
+      class="mobile-menu-toggle"
+      id="mobile-menu-toggle"
       type="button"
       aria-label="Open navigation menu"
       aria-expanded="false"
+      aria-controls="mobile-nav"
     >
 
       <span></span>
@@ -156,6 +511,90 @@
 
     </button>
 
+
+    <!-- ===================================================
+         MOBILE NAVIGATION
+         =================================================== -->
+
+    <nav
+      class="mobile-nav"
+      id="mobile-nav"
+      aria-label="Mobile navigation"
+      aria-hidden="true"
+    >
+
+      <a href="index.html#home">
+        Home
+      </a>
+
+      <a href="index.html#services">
+        Services
+      </a>
+
+      <a href="index.html#work">
+        Our Work
+      </a>
+
+      <a href="index.html#industries">
+        Industries
+      </a>
+
+      <a href="index.html#process">
+        Process
+      </a>
+
+      <a href="index.html#about">
+        About
+      </a>
+
+      <a
+        href="founder.html"
+        aria-current="page"
+      >
+        Founder
+      </a>
+
+      <a href="products.html">
+        Products
+      </a>
+
+      <a href="photographer.html">
+        Photography
+      </a>
+
+      <a href="realestate.html">
+        Real Estate
+      </a>
+
+      <a href="hospitality.html">
+        Hospitality
+      </a>
+
+      <a href="barber.html">
+        Beauty
+      </a>
+
+      <a href="restaurant.html">
+        Restaurants
+      </a>
+
+      <a href="terms.html">
+        Terms &amp; Conditions
+      </a>
+
+      <a href="privacy.html">
+        Privacy Policy
+      </a>
+
+      <a
+        class="nav-cta"
+        href="index.html#contact"
+      >
+        Start a Project
+      </a>
+
+    </nav>
+
   </header>
 
 
@@ -163,16 +602,17 @@
        MAIN
        ===================================================== -->
 
-  <main>
+  <main id="main-content">
 
 
     <!-- ===================================================
-         HERO
+         FOUNDER HERO
          =================================================== -->
 
     <section
-      class="hero"
-      aria-labelledby="founder-hero-title"
+      class="hero founder-hero"
+      id="home"
+      aria-labelledby="founder-title"
     >
 
       <div
@@ -199,27 +639,39 @@
       <div class="hero-content">
 
         <p class="eyebrow">
-          THE FOUNDER
+          THE FOUNDER · WEBCLOUD
         </p>
 
-        <h1 id="founder-hero-title">
-
-          Building ideas
+        <h1 id="founder-title">
+          Built by
           <br>
-
-          <span>
-            into experiences.
-          </span>
-
+          <span>Emris Echefu.</span>
         </h1>
 
         <p class="hero-copy">
-
-          Meet Emris Echefu — the founder behind
-          WebCloud and the vision driving its approach
-          to digital experiences.
-
+          A young builder with a simple belief:
+          businesses with something valuable to offer
+          deserve a digital presence that reflects it.
         </p>
+
+
+        <div class="hero-actions">
+
+          <a
+            class="button button-primary"
+            href="#story"
+          >
+            My Story
+          </a>
+
+          <a
+            class="button button-secondary"
+            href="index.html#contact"
+          >
+            Work With WebCloud
+          </a>
+
+        </div>
 
       </div>
 
@@ -241,89 +693,50 @@
 
 
     <!-- ===================================================
-         FOUNDER PROFILE
+         STORY
          =================================================== -->
 
     <section
-      class="portfolio-section founder-profile"
-      aria-labelledby="profile-title"
+      id="story"
+      class="section-placeholder founder-story-section"
+      aria-labelledby="story-title"
     >
 
-      <div class="portfolio-heading">
+      <p>
+        THE PERSON BEHIND THE BRAND
+      </p>
 
-        <p class="eyebrow">
-          EMRIS ECHEFU · FOUNDER
-        </p>
+      <h2 id="story-title">
+        WebCloud started with a desire to build things that matter.
+      </h2>
 
-        <h2 id="profile-title">
+      <p class="hero-copy">
+        I'm Emris Echefu, the founder of WebCloud.
+        I build websites, digital products, and technology
+        with the goal of turning ideas into experiences
+        people can actually use.
+      </p>
 
-          More than a website.
-          A belief in what is possible.
-
-        </h2>
-
-      </div>
-
-
-      <div class="portfolio-grid">
-
-        <figure
-          class="portfolio-card portfolio-card-wide"
-        >
-
-          <img
-            src="assets/founder-emris.png"
-            alt="Emris Echefu, founder of WebCloud"
-            width="1600"
-            height="1200"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          >
-
-          <figcaption>
-
-            <span>
-              01
-            </span>
-
-            Emris Echefu · Founder
-
-          </figcaption>
-
-        </figure>
-
-      </div>
+      <p class="hero-copy">
+        WebCloud is one expression of that vision:
+        helping businesses create a stronger presence
+        in the digital world.
+      </p>
 
 
-      <div class="section-placeholder">
+      <div class="contact-links">
 
-        <p>
-          THE IDEA
-        </p>
+        <a href="index.html#services">
+          What We Build
+        </a>
 
-        <h2>
-          Good businesses deserve to look as good online as they do in real life.
-        </h2>
+        <a href="index.html#work">
+          Explore Our Work
+        </a>
 
-        <p class="hero-copy">
-
-          WebCloud was created around a simple observation:
-          many businesses have something valuable to offer,
-          but their digital presence does not communicate
-          that value.
-
-        </p>
-
-        <p class="hero-copy">
-
-          A website should not simply exist because a business
-          is expected to have one. It should create confidence,
-          explain the value of the business, make information
-          easier to access, and give potential customers a
-          reason to take the next step.
-
-        </p>
+        <a href="index.html#contact">
+          Start a Project
+        </a>
 
       </div>
 
@@ -331,61 +744,33 @@
 
 
     <!-- ===================================================
-         FOUNDER MESSAGE
+         BELIEF
          =================================================== -->
 
     <section
       class="section-placeholder"
-      aria-labelledby="message-title"
+      aria-labelledby="belief-title"
     >
 
       <p>
-        A MESSAGE FROM THE FOUNDER
+        THE BELIEF
       </p>
 
-      <h2 id="message-title">
-
-        “I believe the internet should make opportunity
-        more accessible — not make good businesses invisible.”
-
+      <h2 id="belief-title">
+        Small businesses shouldn't have to look small online.
       </h2>
 
       <p class="hero-copy">
-
-        My interest in technology has always been connected
-        to one question: what can we build that makes something
-        better?
-
+        A website is more than a collection of pages.
+        It is often the first place someone decides whether
+        a business feels credible, professional, and worth
+        contacting.
       </p>
 
       <p class="hero-copy">
-
-        WebCloud is one expression of that idea.
-
-        It is built around the belief that a photographer,
-        restaurant owner, real-estate professional, barber,
-        construction company, hospitality brand, or growing
-        business should be able to present their work with
-        confidence.
-
-      </p>
-
-      <p class="hero-copy">
-
-        The goal is not to make every business look the same.
-        The goal is to understand what makes each business
-        different and build a digital experience that communicates
-        that difference clearly.
-
-      </p>
-
-      <p class="hero-copy">
-
-        Every project is therefore treated as more than a
-        collection of pages. It is an opportunity to turn an
-        idea, service, or business into an experience people
-        can understand and remember.
-
+        That's why WebCloud focuses on creating experiences
+        that communicate quality before a conversation even
+        begins.
       </p>
 
     </section>
@@ -396,28 +781,123 @@
          =================================================== -->
 
     <section
-      class="portfolio-section"
+      class="section-placeholder"
       aria-labelledby="vision-title"
+    >
+
+      <p>
+        THE VISION
+      </p>
+
+      <h2 id="vision-title">
+        Build technology that gives ambitious people an advantage.
+      </h2>
+
+      <p class="hero-copy">
+        WebCloud is part of a larger vision:
+        creating useful, modern technology that helps
+        businesses, creators, and people move from simply
+        having an idea to actually building something with it.
+      </p>
+
+      <p class="hero-copy">
+        The websites we create today are one part of
+        that bigger journey.
+      </p>
+
+    </section>
+
+
+    <!-- ===================================================
+         VALUES
+         =================================================== -->
+
+    <section
+      id="values"
+      class="section-placeholder"
+      aria-labelledby="values-title"
+    >
+
+      <p>
+        WHAT MATTERS
+      </p>
+
+      <h2 id="values-title">
+        Principles behind the work.
+      </h2>
+
+
+      <div class="contact-links">
+
+        <a href="#values">
+          <strong>
+            01 · Craft
+          </strong>
+
+          <br>
+
+          Details matter.
+        </a>
+
+        <a href="#values">
+          <strong>
+            02 · Clarity
+          </strong>
+
+          <br>
+
+          Technology should make things easier to understand.
+        </a>
+
+        <a href="#values">
+          <strong>
+            03 · Performance
+          </strong>
+
+          <br>
+
+          Beautiful experiences should still be fast and useful.
+        </a>
+
+        <a href="#values">
+          <strong>
+            04 · Growth
+          </strong>
+
+          <br>
+
+          A website should support the business behind it.
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         WORK
+         =================================================== -->
+
+    <section
+      id="work"
+      class="portfolio-section"
+      aria-labelledby="build-title"
     >
 
       <div class="portfolio-heading">
 
         <p class="eyebrow">
-          THE VISION
+          02 · THE WORK
         </p>
 
-        <h2 id="vision-title">
-
-          Build. Learn. Improve. Repeat.
-
+        <h2 id="build-title">
+          From websites to larger digital products.
         </h2>
 
         <p class="hero-copy">
-
-          WebCloud is part of a larger technology journey
-          focused on creating useful digital products,
-          services, and experiences.
-
+          WebCloud is focused on digital experiences today,
+          while the broader vision extends into software,
+          artificial intelligence, and technology products.
         </p>
 
       </div>
@@ -426,19 +906,71 @@
       <div class="contact-links">
 
         <a href="index.html#services">
-          Web Design
+          Websites
+        </a>
+
+        <a href="index.html#work">
+          Portfolio Experiences
         </a>
 
         <a href="products.html">
-          Selected Work
+          Digital Products
         </a>
 
         <a href="index.html#process">
           Our Process
         </a>
 
-        <a href="index.html#contact">
-          Start a Project
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         INDUSTRIES
+         =================================================== -->
+
+    <section
+      id="industries"
+      class="section-placeholder"
+      aria-labelledby="industries-title"
+    >
+
+      <p>
+        WHO WE BUILD FOR
+      </p>
+
+      <h2 id="industries-title">
+        Businesses where a strong first impression matters.
+      </h2>
+
+      <p class="hero-copy">
+        WebCloud focuses on visual and service-based businesses
+        where customers often discover, evaluate, and contact
+        a business online.
+      </p>
+
+
+      <div class="contact-links">
+
+        <a href="photographer.html">
+          Photography
+        </a>
+
+        <a href="realestate.html">
+          Real Estate
+        </a>
+
+        <a href="hospitality.html">
+          Hospitality
+        </a>
+
+        <a href="barber.html">
+          Beauty
+        </a>
+
+        <a href="restaurant.html">
+          Restaurants
         </a>
 
       </div>
@@ -447,142 +979,49 @@
 
 
     <!-- ===================================================
-         COMPANY STRUCTURE
+         FUTURE
          =================================================== -->
 
     <section
       class="section-placeholder"
-      aria-labelledby="company-title"
+      aria-labelledby="future-title"
     >
 
       <p>
-        THE BIGGER PICTURE
+        WHAT COMES NEXT
       </p>
 
-      <h2 id="company-title">
-
-        WebCloud is part of something bigger.
-
+      <h2 id="future-title">
+        This is only the beginning.
       </h2>
 
       <p class="hero-copy">
-
-        WebCloud operates as a digital-focused product and
-        service brand within a broader technology vision.
-
+        WebCloud is being built as more than a web design
+        service. The long-term goal is to develop products
+        and technology that solve real problems and create
+        meaningful opportunities.
       </p>
 
-      <div class="contact-links">
+      <p class="hero-copy">
+        Every project, client, and product is another step
+        toward that larger vision.
+      </p>
+
+
+      <div class="hero-actions">
 
         <a
-          href="https://archangel-gules.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
+          class="button button-primary"
+          href="products.html"
         >
-
-          Archangel Technologies ↗
-
+          Explore Products
         </a>
 
-        <a href="products.html">
-
-          WebCloud Products
-
-        </a>
-
-        <a href="index.html">
-
-          WebCloud
-
-        </a>
-
-      </div>
-
-      <p class="hero-copy">
-
-        WebCloud focuses on websites, digital experiences,
-        and business-facing solutions, while Archangel
-        Technologies represents the broader technology
-        direction behind the work.
-
-      </p>
-
-      <p class="hero-copy">
-
-        Both sit within the wider vision of
-        <strong>
-          Emris Industries
-        </strong>.
-
-      </p>
-
-    </section>
-
-
-    <!-- ===================================================
-         FOUNDER PRINCIPLES
-         =================================================== -->
-
-    <section
-      class="portfolio-section"
-      aria-labelledby="principles-title"
-    >
-
-      <div class="portfolio-heading">
-
-        <p class="eyebrow">
-          PRINCIPLES
-        </p>
-
-        <h2 id="principles-title">
-
-          What guides the work.
-
-        </h2>
-
-      </div>
-
-
-      <div class="contact-links">
-
-        <a href="#principles">
-
-          <strong>
-            01 · Purpose
-          </strong>
-
-        </a>
-
-        <a href="#principles">
-
-          <strong>
-            02 · Simplicity
-          </strong>
-
-        </a>
-
-        <a href="#principles">
-
-          <strong>
-            03 · Quality
-          </strong>
-
-        </a>
-
-        <a href="#principles">
-
-          <strong>
-            04 · Innovation
-          </strong>
-
-        </a>
-
-        <a href="#principles">
-
-          <strong>
-            05 · Continuous Improvement
-          </strong>
-
+        <a
+          class="button button-secondary"
+          href="index.html#contact"
+        >
+          Work With Us
         </a>
 
       </div>
@@ -591,32 +1030,27 @@
 
 
     <!-- ===================================================
-         CLOSING
+         FINAL CTA
          =================================================== -->
 
     <section
       class="section-placeholder contact-placeholder"
-      aria-labelledby="closing-title"
+      aria-labelledby="final-title"
     >
 
       <p>
-        BUILD SOMETHING WORTH REMEMBERING
+        A MESSAGE FROM THE FOUNDER
       </p>
 
-      <h2 id="closing-title">
-
-        Have an idea?
-        Let's turn it into something real.
-
+      <h2 id="final-title">
+        Let's build something worth remembering.
       </h2>
 
       <p class="hero-copy">
-
-        Whether you are starting from scratch,
-        rebuilding an outdated website, or simply
-        ready for your business to have a stronger
-        digital presence, WebCloud is ready to help.
-
+        Whether you're building a business, growing an existing
+        brand, or know your current online presence doesn't
+        represent what you're capable of, WebCloud is here
+        to help you take the next step.
       </p>
 
 
@@ -626,12 +1060,12 @@
           Start a Project
         </a>
 
-        <a href="products.html">
-          Explore Our Work
+        <a href="index.html#work">
+          Explore WebCloud
         </a>
 
-        <a href="index.html">
-          Back to WebCloud
+        <a href="products.html">
+          Explore Products
         </a>
 
       </div>
@@ -668,13 +1102,19 @@
 
       <p>
 
-        <a href="index.html">
-          Home
+        <a href="index.html#services">
+          Services
         </a>
 
         ·
 
         <a href="products.html">
+          Products
+        </a>
+
+        ·
+
+        <a href="index.html#work">
           Work
         </a>
 
@@ -688,6 +1128,47 @@
 
         <a href="index.html#contact">
           Contact
+        </a>
+
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Industries
+      </strong>
+
+      <p>
+
+        <a href="photographer.html">
+          Photography
+        </a>
+
+        ·
+
+        <a href="realestate.html">
+          Real Estate
+        </a>
+
+        ·
+
+        <a href="hospitality.html">
+          Hospitality
+        </a>
+
+        ·
+
+        <a href="barber.html">
+          Beauty
+        </a>
+
+        ·
+
+        <a href="restaurant.html">
+          Restaurants
         </a>
 
       </p>
@@ -744,7 +1225,11 @@
     <div>
 
       <p>
-        © 2026 WebCloud.
+        ©
+        <span data-current-year>
+          2026
+        </span>
+        WebCloud.
         All rights reserved.
       </p>
 
@@ -760,4 +1245,4 @@
   <script src="script.js"></script>
 
 </body>
-  </html>
+</html>
